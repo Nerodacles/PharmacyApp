@@ -11,9 +11,6 @@ import React from 'react';
 import { Provider } from 'react-redux'
 import './Translations';
 
-// const uri =
-//   'mongodb+srv://pharmacy:1UoSNcO6N9syYIU5@pharmacyapp.uvehzr2.mongodb.net/?retryWrites=true&w=majority';
-
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
 }
