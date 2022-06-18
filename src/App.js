@@ -24,7 +24,8 @@ import {
   View,
 } from 'react-native';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { TopHeader } from './Components';
 
 const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -60,23 +61,34 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <React.Fragment>
+      <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        <TopHeader />
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            // backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Test">
-            Edit <Text style={styles.highlight}>App.js</Text> MongoDB app.
-          </Section>
+          
           {/* <Section>Test MongoDB Connection: {client.collection}</Section> */}
         </View>
       </ScrollView>
+      <Section title="PharmacyApp">
+        <Text>Edit </Text> MongoDB app.
+      </Section>
     </SafeAreaView>
+    <SafeAreaView style={{flex: 3, backgroundStyle}}>
+      <View>
+        <Text style={styles.highlight}>
+          Hola Mundo Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra ultricies quam, a pharetra sem blandit a. Vivamus rhoncus nisi quis tempus feugiat. Cras vulputate, eros quis hendrerit posuere, sem urna fringilla lacus, sit amet commodo nisi augue vel magna. Etiam mollis arcu neque, vitae porta sapien finibus quis. Nulla ac nisl vitae nisl suscipit pretium. Proin eleifend euismod magna et viverra. Ut id dolor at felis finibus condimentum eu tincidunt nibh.
+          { '\n \n' } Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur rutrum magna nibh, sed molestie ipsum mattis non. Sed luctus justo luctus nisl interdum, id laoreet arcu rhoncus. Nam posuere justo diam, vitae facilisis felis suscipit vehicula. Proin nec faucibus ipsum. Mauris facilisis, enim sed tincidunt venenatis, erat dolor dapibus est, quis vehicula lacus nulla ac turpis. Ut mi nisl, feugiat id vulputate in, fermentum vitae nibh. Donec porta ultricies congue. Etiam id eros nec nunc iaculis porttitor. Cras eu diam rutrum, sagittis tellus a, euismod lorem. Praesent orci turpis, consectetur vel nisi eget, egestas vestibulum purus. Praesent sollicitudin vulputate ipsum, eget commodo dui ultricies in. Quisque lobortis augue diam, a consequat sapien convallis sed.
+        </Text>
+      </View>
+    </SafeAreaView>  
+    </React.Fragment>
   );
 };
 
@@ -96,6 +108,7 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+    margin: 5,
   },
 });
 
