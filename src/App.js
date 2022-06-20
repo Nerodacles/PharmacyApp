@@ -8,8 +8,10 @@
 
 import 'react-native-gesture-handler'
 import React from 'react';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+import { Button, Alert } from 'react-native';
 import './Translations';
+import axios from 'axios';
 
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
@@ -26,6 +28,17 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import { TopHeader } from './Components';
+import reactotron from 'reactotron-react-native';
+
+const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
+
+const getAll = () => {
+  axiosInstance.get('api/getAll').then((response) => {
+    reactotron.logImportant(response.data);
+    Alert.alert(response.data[0].name);
+  });
+}
+
 
 const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -82,6 +95,10 @@ const App = () => {
     </SafeAreaView>
     <SafeAreaView style={{flex: 3, backgroundStyle}}>
       <View>
+        <Button
+          title="Obtener datos de BD"
+          onPress={() => getAll()}
+        />
         <Text style={styles.highlight}>
           Hola Mundo Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra ultricies quam, a pharetra sem blandit a. Vivamus rhoncus nisi quis tempus feugiat. Cras vulputate, eros quis hendrerit posuere, sem urna fringilla lacus, sit amet commodo nisi augue vel magna. Etiam mollis arcu neque, vitae porta sapien finibus quis. Nulla ac nisl vitae nisl suscipit pretium. Proin eleifend euismod magna et viverra. Ut id dolor at felis finibus condimentum eu tincidunt nibh.
           { '\n \n' } Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur rutrum magna nibh, sed molestie ipsum mattis non. Sed luctus justo luctus nisl interdum, id laoreet arcu rhoncus. Nam posuere justo diam, vitae facilisis felis suscipit vehicula. Proin nec faucibus ipsum. Mauris facilisis, enim sed tincidunt venenatis, erat dolor dapibus est, quis vehicula lacus nulla ac turpis. Ut mi nisl, feugiat id vulputate in, fermentum vitae nibh. Donec porta ultricies congue. Etiam id eros nec nunc iaculis porttitor. Cras eu diam rutrum, sagittis tellus a, euismod lorem. Praesent orci turpis, consectetur vel nisi eget, egestas vestibulum purus. Praesent sollicitudin vulputate ipsum, eget commodo dui ultricies in. Quisque lobortis augue diam, a consequat sapien convallis sed.

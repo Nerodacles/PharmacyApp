@@ -8,7 +8,7 @@ let host = "10.70.0.152"
 Reactotron.setAsyncStorageHandler(AsyncStorage)
   .configure({
     host: host,
-    name: "Note 8 (2021) - PharmacyApp"
+    name: "PharmacyApp"
   }) // we can use plugins here -- more on this later
   .useReactNative({
     asyncStorage: false,
