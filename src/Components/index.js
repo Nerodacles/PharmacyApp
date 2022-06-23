@@ -4,8 +4,6 @@ import HermesBadge from '../../node_modules/react-native/Libraries/NewAppScreen/
 import LearnMoreLinks from '../../node_modules/react-native/Libraries/NewAppScreen/components/LearnMoreLinks';
 import DebugInstructions from '../../node_modules/react-native/Libraries/NewAppScreen/components/DebugInstructions';
 import ReloadInstructions from '../../node_modules/react-native/Libraries/NewAppScreen/components/ReloadInstructions';
-import Products from './products';
-import ProductsList from './productslist';
 
 export {
   Colors,

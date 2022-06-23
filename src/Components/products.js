@@ -27,20 +27,17 @@ const Products = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get('api/getAll').then((result) => {
+    axiosInstance.get('api/getAll/').then((result) => {
       setData(result.data)
       // Alert.alert(response.data[1].name);
     });
-  });
-  const renderItem = ({ item }) => (
-    <Item title={item.title} />
-  );
+  }, []);
   
 
     return (
         <SafeAreaView style={{flex: 3}}>
             <View>
-                {data ? <ProductsList data={data} /> : <Loading /> }
+                {data ? <ProductsList key={data._id} data={data} /> : <Loading /> }
             </View>
         </SafeAreaView>  
     );
