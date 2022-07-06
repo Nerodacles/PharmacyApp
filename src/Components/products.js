@@ -17,11 +17,11 @@ import {
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-const Item = ({ item }) => (
-  <View>
-    <Text>{item}</Text>
-  </View>
-);
+// const Item = ({ item }) => (
+//   <View>
+//     <Text>hola mundo: {item}</Text>
+//   </View>
+// );
 
 const Products = () => {
   const [data, setData] = useState([]);
@@ -29,7 +29,6 @@ const Products = () => {
   useEffect(() => {
     axiosInstance.get('api/getAll/').then((result) => {
       setData(result.data)
-      // Alert.alert(response.data[1].name);
     });
   }, []);
   
@@ -37,7 +36,8 @@ const Products = () => {
     return (
         <SafeAreaView style={{flex: 3}}>
             <View>
-                {data ? <ProductsList key={data._id} data={data} /> : <Loading /> }
+              <Text>Hola</Text>
+                {data ? <ProductsList key={data.id} data={data} /> : <Loading /> }
             </View>
         </SafeAreaView>  
     );

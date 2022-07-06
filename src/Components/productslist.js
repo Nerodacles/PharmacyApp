@@ -3,24 +3,20 @@ import reactotron from 'reactotron-react-native';
 import { Provider } from 'react-redux';
 import { View, Text, Button, Pressable, Alert, StyleSheet} from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-const getOne = (_id) => {
-    axiosInstance.get(`api/getOne/${_id}`).then((response) => {
-      Alert.alert(`Id: ${response.data._id} \nNombre: ${response.data.name}`);
-    });
-}
 
 const ProductsList = ({ data }) =>{
     const [timesPressed, setTimesPressed] = useState(0);
-
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             {data.map((item) => (
                 <Pressable 
-                    key={item._id}
-                    onPress={() => getOne(item._id)}
+                    key={item.id}
+                    onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
                     style={({ pressed }) => [
                         {
                             backgroundColor: pressed

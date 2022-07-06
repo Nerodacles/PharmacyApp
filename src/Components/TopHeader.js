@@ -1,10 +1,9 @@
  import React from 'react';
  import {ImageBackground, StyleSheet, Text, useColorScheme} from 'react-native';
-import {Colors, HermesBadge} from '../Components';
 
  
 const TopHeader = () => {
-    const isDarkMode = useColorScheme() === 'dark';
+    // const isDarkMode = useColorScheme() === 'dark';
     return (
       <ImageBackground
         accessibilityRole="image"
@@ -12,18 +11,18 @@ const TopHeader = () => {
         source={require('../../android/app/src/main/res/mipmap-hdpi/logo_black_rounded.png')}
         style={[
           styles.background,
-          {
-            backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-          },
+          // {
+          //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+          // },
         ]}
         imageStyle={styles.logo}>
      
         <Text
           style={[
             styles.text,
-            {
-              color: isDarkMode ? Colors.white : Colors.black,
-            },
+            // {
+            //   color: isDarkMode ? Colors.white : Colors.black,
+            // },
           ]}>
           Welcome to Our App
           {'\n'}
@@ -40,7 +39,7 @@ const TopHeader = () => {
       paddingHorizontal: 32,
     },
     logo: {
-      opacity: 0.2,
+      opacity: 0.5,
       overflow: 'visible',
       resizeMode: 'cover',
       /*
