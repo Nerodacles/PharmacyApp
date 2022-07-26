@@ -1,32 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import reactotron from 'reactotron-react-native';
 import { Provider } from 'react-redux';
-import { View, Text, Button, Pressable, Alert, StyleSheet} from 'react-native';
+import { View, Text, Button, Pressable, Alert, StyleSheet,} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Divider } from 'react-native-paper';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 
 const ProductsList = ({ data }) =>{
-    const [timesPressed, setTimesPressed] = useState(0);
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
             {data.map((item) => (
-                <Pressable 
+                <View>
+                  <Pressable 
                     key={item.id}
                     onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
                     style={({ pressed }) => [
-                        {
-                            backgroundColor: pressed
-                                ? 'black'
-                                : 'rgb(130, 130, 130)'
-                        },
-                    styles.wrapperCustom
-                    ]}>
-                    <Text style={styles.text}>{item.name}</Text>
-                </Pressable>
+                      {
+                        backgroundColor: pressed
+                          ? 'rgb(210, 230, 255)'
+                          : 'white'
+                      }, styles.wrapperCustom]}>
+                      <Text style={styles.text}>{item.name}</Text>
+                  </Pressable>
+                  <Divider />
+
+                </View>
 
             ))}
         </View>
@@ -39,9 +42,15 @@ const styles = StyleSheet.create({
       justifyContent: "center",
     },
     text: {
-      fontSize: 16
+      color: 'black',
+      fontSize: 20,
+      fontWeight: '400',
+    },
+    buttonAltText: {
+      
     },
     wrapperCustom: {
+      
       borderRadius: 8,
       padding: 6,
       margin: 4
@@ -51,7 +60,7 @@ const styles = StyleSheet.create({
       margin: 10,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: '#f0f0f0',
-      backgroundColor: '#f9f9f9'
+      backgroundColor: '#FFF'
     }
   });
   
