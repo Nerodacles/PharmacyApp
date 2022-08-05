@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.6",
+    "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
@@ -23,6 +23,7 @@
     "react-native-paper": "^4.12.3",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.14.0",
+    "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.2",
     "reactotron-react-native": "^5.0.2"
   },

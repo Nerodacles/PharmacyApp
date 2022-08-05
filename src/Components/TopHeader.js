@@ -1,5 +1,5 @@
  import React from 'react';
- import {ImageBackground, StyleSheet, Text, useColorScheme} from 'react-native';
+ import {ImageBackground, StyleSheet, Text} from 'react-native';
 
  
 const TopHeader = () => {

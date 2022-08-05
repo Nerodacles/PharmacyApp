@@ -1,19 +1,27 @@
 // In App.js in a new project
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/AuthContext';
+
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-function Settings() {
+const LoginScreen = ({navigation}) => {
+  const {login} = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+
+  const [userToken, setUserToken] = useState(null);
+  const [userInfo, setUserInfo] = useState('');
 
 
   const [isError, setIsError] = useState(false);
@@ -37,80 +45,88 @@ function Settings() {
     setPassword('');
     setEmail('');
   }
-  const onLoggedIn = (datos) => {
-    Alert.alert(
-        "Inicio de sesión exitoso",
-        `Has iniciado sesion como: ${datos.username} con el rol de ${datos.role}`,
-        [
-            {
-                text: "Cancelar",
-                onPress: () => console.log(`Boton "Cancelar" pulsado`),
-                style: "cancel"
-            },
-            {
-                text: "Aceptar",
-                onPress: () => console.log(`Boton "Aceptar" pulsado`)
-            }
-        ]
-    )
-    // axiosInstance.get(`users/${id}`).then(async res => { 
-    //     try {
-    //       if (res.status === 200) {
-    //         console.log(res.data);
-    //       }
-    //     } catch (err) {
-    //       console.log(err);
-    //     };
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-  }
 
-  const onSubmit = async (event) => {
-    if (!username.trim() || !password.trim() || (!isLogin && !email.trim())){
-        alert("Usuario, correo o contraseña invalido");
-        return;
-    }
+  const onSubmit = () => {
     setIsLoading(true);
-    try{
-        const res = await axiosInstance.post(`users/${isLogin ? 'login' : 'register'}`, {
+    // if (!username.trim() || !password.trim() || (!isLogin && !email.trim())){
+    //     alert("Usuario, correo o contraseña invalido");
+    //     return;
+    // }
+    // try{
+        axiosInstance.post(`users/${!isLogin && 'register'}`, {
             username,
             email,
             password,
-        });
-        if (res.status === 200){
-            onLoggedIn(res.data)
-            setIsLoading(false);
-            setUsername('');
-            setPassword('');
-            setEmail('');
-        }
+        }).then(res => {
+            let userInfo = res.data;
+            setUserInfo(userInfo);
+            setUserToken(userInfo.token);
+
+            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+            AsyncStorage.setItem('userToken', userInfo.token);
+
+            // console.log(res.data)
+            // console.log('User TOken: '+ userInfo.token)
+
+
+        })
+        .catch(e => {
+            console.log(`Login error: ${e}`)
+        })
+        // if (res.status === 200){
+        //   let userInfo = res.data;
+        //   console.log(userInfo)
+        //   console.log('User token: ' + userInfo.token)
+        //   setUserInfo(userInfo);
+        //   setUserToken(userInfo.token)
+
+        //   AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+        //   AsyncStorage.setItem('userToken', userInfo.token)
+        //   // onLoggedIn(res.data)
+        //   setIsLoading(false);
+        // }
     
-    } catch (error){
-        console.log(error)
-        alert("Un error ha ocurrido");
-        setIsLoading(false);
-    }
-  }
-  
-  const getMessage = () => {
+    // } 
+    // catch (e){
+    //     console.log(`Login error: ${e}`)
+    // }
   }
 
   return (
-    // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //   <Text style={{color:'black'}}>Settings!</Text>
-    // </View>
-    // <ImageBackground source={} style={styles.image}>
             <View style={styles.card}>
-                <Text style={styles.heading}>{isLogin ? 'Login' : 'Sign up'}</Text>
+                <Text style={styles.heading}>
+                    {isLogin ? 'Login' : 'Sign up'}
+                </Text>
                 <View style={styles.form}>
                     <View style={styles.inputs}>
-                        {!isLogin && <TextInput value={email} style={styles.input} placeholderTextColor="black"  placeholder="Correo" autoCapitalize="none" onChangeText={onChangeEmail}></TextInput>}
-                        <TextInput value={username} style={styles.input} placeholderTextColor="black" placeholder="Usuario" onChangeText={onChangeUsername}></TextInput>
-                        <TextInput value={password} secureTextEntry={true} style={styles.input} placeholderTextColor="black" placeholder="Contraseña" onChangeText={onChangePasswd}></TextInput>
+                        {!isLogin && <TextInput 
+                            value={email} 
+                            style={styles.input} 
+                            placeholderTextColor="black"  
+                            placeholder="Correo" 
+                            autoCapitalize="none" 
+                            onChangeText={onChangeEmail}>
+                        </TextInput>}
+                        
+                        <TextInput 
+                            value={username} 
+                            style={styles.input} 
+                            placeholderTextColor="black" 
+                            placeholder="Usuario" 
+                            onChangeText={onChangeUsername}>
+                        </TextInput>
+
+                        <TextInput 
+                            value={password} 
+                            secureTextEntry={true} 
+                            style={styles.input} 
+                            placeholderTextColor="black" 
+                            placeholder="Contraseña" 
+                            onChangeText={onChangePasswd}>
+                        </TextInput>
+                        
                         <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
-                        <TouchableOpacity style={styles.button} onPress={onSubmit}>
+                        <TouchableOpacity style={styles.button} onPress={isLogin ? () => {login(username, password)} : onSubmit}>
                             <Text style={styles.buttonText}>Done</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttonAlt} onPress={onChangeHandler}>
@@ -119,7 +135,6 @@ function Settings() {
                     </View>    
                 </View>
             </View>
-        // </ImageBackground>
   ) 
 }
 
@@ -204,4 +219,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Settings;
+export default LoginScreen;

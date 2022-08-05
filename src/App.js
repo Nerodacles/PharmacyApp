@@ -8,63 +8,27 @@
 
 import 'react-native-gesture-handler'
 import React from 'react';
-import { Provider } from 'react-redux';
 import './Translations';
 import axios from 'axios';
+import { StyleSheet } from 'react-native';
+
+import { AuthProvider } from './context/AuthContext';
+import { AppNavigator } from './Navigation';
 
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
 }
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import { TopHeader, Products  } from './Components';
-import { AppNavigator } from './Screens';
-import reactotron from 'reactotron-react-native';
 
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 
-
-// const Section = ({children, title}) => {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// };
-
 const App = () => {
   return (
-    <React.Fragment>
+    <AuthProvider>
       <AppNavigator />
-    </React.Fragment>
+    </AuthProvider>
   );
 };
 

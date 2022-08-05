@@ -1,4 +1,5 @@
-export { default as AppNavigator} from './AppNavigator'
 export { default as HomeScreen} from './HomeScreen'
 export { default as Farmacos} from './Farmacos'
-export { default as Settings} from './Settings'
+export { default as SettingsScreen} from './SettingsScreen'
+export { default as LoginScreen} from './LoginScreen'
+export { default as ProfileScreen} from './ProfileScreen'

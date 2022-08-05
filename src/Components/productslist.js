@@ -11,29 +11,28 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 
 const ProductsList = ({ data }) =>{
-    const navigation = useNavigation();
-    return (
-        <View style={styles.container}>
-            {data.map((item) => (
-                <View>
-                  <Pressable 
-                    key={item.id}
-                    onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
-                    style={({ pressed }) => [
-                      {
-                        backgroundColor: pressed
-                          ? 'rgb(210, 230, 255)'
-                          : 'white'
-                      }, styles.wrapperCustom]}>
-                      <Text style={styles.text}>{item.name}</Text>
-                  </Pressable>
-                  <Divider />
+  const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      {data.map((item) => (
+        <View key={item.id}>
+          <Pressable 
+            onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed
+                  ? 'rgb(210, 230, 255)'
+                  : 'white'
+              }, styles.wrapperCustom]}>
+            <Text style={styles.text}>{item.name}</Text>
+          </Pressable>
+          <Divider />
 
-                </View>
-
-            ))}
         </View>
-    );
+
+      ))}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

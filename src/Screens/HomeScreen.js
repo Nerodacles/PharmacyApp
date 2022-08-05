@@ -1,13 +1,14 @@
 // In App.js in a new project
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Button } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AuthContext } from '../context/AuthContext';
 
-function HomeScreen ({navigation}) {
+const HomeScreen = ({navigation}) => {
+    const {userInfo} = useContext(AuthContext);
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#FFF" }}>
-            <Text style={{color:'green'}}>Home Screen</Text>
+            <Text style={{color:'green' }}>Home Screen, Hello {userInfo.username}</Text>
             <Button
                 title="Ir a los farmacos"
                 onPress={() => navigation.navigate('Products')}>
