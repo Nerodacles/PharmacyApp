@@ -37,7 +37,6 @@ const HomeScreen = ({navigation}) => {
                             source={require('../assets/images/icon.png')}
                             style={{height:60, width:60}}
                         />
-
                     </View>
                 </View>
             </View>
