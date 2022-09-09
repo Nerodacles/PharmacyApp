@@ -5,25 +5,77 @@ on:
     tags:
       - '*'
 
-jobs:       
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.2.0
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+          
   build-android:
     runs-on: ubuntu-latest
     steps: 
       - name: checkout code
         uses: actions/checkout@v2
+        
       - name: setup jdk
         uses: actions/setup-java@v1
         with:
          java-version: 11
+         
       - uses: actions/checkout@v2
       - name: Install npm dependencies
         run: npm install
+        
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v2
+        with:
+          path: ./android/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ./android/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+        
       - name: Make Gradle executable
-        run: cd android && chmod +x ./gradlew 
+        run: cd android && chmod +x ./gradlew
+        
       - name: Build Android Release
-        run: cd android && ./gradlew assembleRelease
-      - name: Create release and upload apk
-        uses: kyze8439690/action-release-releaseapk@master
+        run: cd android && ./gradlew assembleRelease --no-daemon
+        
+      - name: Rename Android App APK
+        run: cp $SIGNED_FILE pharmacyapp-latest.apk
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          APP_FOLDER: android/app
+          SIGNED_FILE: ./android/app/build/outputs/apk/release/app-release.apk
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Apk Bundle
+          path: pharmacyapp-latest.apk
+        
+      - name: Create APK Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.TOKEN }}"
+          automatic_release_tag: ${{ steps.semvers.outputs.patch }}
+          prerelease: false
+          draft: true
+          title: ${{ steps.semvers.outputs.patch }}
+          files: |
+            pharmacyapp-latest.apk
