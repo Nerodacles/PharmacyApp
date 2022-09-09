@@ -7,7 +7,7 @@ on:
 
 jobs:       
   build-android:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps: 
       - name: checkout code
         uses: actions/checkout@v2
