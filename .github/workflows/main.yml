@@ -23,10 +23,7 @@ jobs:
       - name: Build Android Release
         run: cd android && ./gradlew assembleRelease
       - name: Create release and upload apk
-        uses: yurakurets/action-release-debugapk@master
+        uses: kyze8439690/action-release-releaseapk@master
         env:
-          REPO_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          APK_FOLDER: android/app/build/outputs/apk/release/app-release.apk
           APP_FOLDER: android/app
-          RELEASE_TITLE: New Build
