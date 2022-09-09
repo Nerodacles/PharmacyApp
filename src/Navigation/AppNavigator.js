@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, StatusBar } from 'react-native'
 import React, {useContext} from 'react'
 import AuthStack from './AuthStack'
 import TabNavigator from './TabNavigator'
@@ -15,7 +15,8 @@ const AppNavigator = () => {
   } 
   return (
     <NavigationContainer>
-      {userToken !== '' ? <TabNavigator /> : <AuthStack />}
+      <StatusBar backgroundColor= '#FFF' barStyle='dark-content'/>
+      {( userToken !== null && userToken !== undefined && userToken !== '') ? <TabNavigator /> : <AuthStack />}
     </NavigationContainer>
   )
 }

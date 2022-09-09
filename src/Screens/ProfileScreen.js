@@ -1,17 +1,126 @@
 import React, {useContext} from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet} from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 
-const ProfileScreen = () =>{
+const ProfileScreen = ({ navigation }) =>{
     const {logout} = useContext(AuthContext);
+    const {userInfo} = useContext(AuthContext);
     return(
-        <View style={{flex:1, justifyContent:'center',alignItems:'center' }}>
-            <Text>Profile Screen</Text>
-            <TouchableOpacity onPress={() => {logout()}}>
-                <Text style={{color: 'black'}}>Sign Out</Text>
-            </TouchableOpacity>
+        <View style={style.container}>
+            <Text style={style.title}>Perfil</Text>
+            <View style={style.cont}>
+                <View style={style.cont2}>
+                    <View style={style.options}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Favorito')}>
+                            <Text style={style.subtitle}>
+                                Favoritos
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Nombre de Usuario:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.username: 'RandomUser'}
+                        </Text>
+                    </View>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Correo:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.email: 'RandomUser'}
+                        </Text>
+                    </View>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Rol:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.role: 'RandomUser'}
+                        </Text>
+                    </View>
+                </View>
+                <View style={style.cont3}>
+                    <TouchableOpacity style={style.btn} onPress={() => {logout()}}>
+                        <Text style={style.btnText}>Cerrar Sesión</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     )
 }
+
+const style =StyleSheet.create({
+    Text:{
+        color: "#FFF"
+    },
+    container:{
+        flex: 1,
+        alignItems:"center",
+        justifyContent: "center",
+        backgroundColor: "#FFF"
+    },
+    cont:{
+        flex:1,
+        flexDirection:"column",
+        backgroundColor:"#4cc3eb",
+        width:"95%",
+        borderRadius:50,
+        paddingHorizontal:20,
+        marginBottom:5,
+    },
+    title:{
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginTop: '10%',
+        marginBottom: '10%',
+        color: 'black',
+        textAlign: 'center'
+    },
+    subtitle:{
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 10,
+    },
+    btn:{
+        padding:10,
+        borderRadius: 20,
+        marginTop: 100,
+        marginHorizontal: 20,
+        backgroundColor: "#0062da",
+        alignItems: "center"
+    },
+    btnText:{
+        fontSize:20,
+    },
+    text:{
+        paddingTop:10,
+        fontSize: 18,
+        lineHeight:25
+    },
+    cont2:{
+        marginVertical:25,
+        height:"50%",
+      },
+    cont3:{
+        flexDirection:"row",
+        marginBottom:20,
+        alignItems:"center",
+        width:"100%",
+        height:"45%",
+        justifyContent:"flex-end",
+        marginTop:20,
+      },
+      options:{
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"space-between",
+        width:"100%",
+        paddingHorizontal:10,
+        paddingTop:15,
+      }
+})
 
 export default ProfileScreen

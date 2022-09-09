@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   ScrollView,
   View,
-  RefreshControl
+  RefreshControl,
+  StatusBar
   } from 'react-native';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
@@ -38,8 +39,10 @@ const Products = ({navigation}) => {
   }, []);
 
     return (
+      
         <SafeAreaView style={{flex: 3, backgroundColor: "#FFF"}}>
             <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+              <StatusBar backgroundColor= '#FFF' barStyle='dark-content'/>
               <View style = {{flex: 1, margin:5}}>
                   {data ? <ProductsList key={data.id} data={data} /> : <Loading /> }
               </View>

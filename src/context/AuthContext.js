@@ -22,13 +22,17 @@ export const AuthProvider = ({children}) => {
         })
         .then(res => {
           let userInfo = res.data;
-          setUserInfo(userInfo);
-          setUserToken(userInfo.token)
-
-          AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-          AsyncStorage.setItem('userToken', userInfo.token)
-          console.log(userInfo)
-          console.log('User token: ' + userInfo.token)
+          if (userInfo.token !== null || userInfo.token !== undefined){
+            setUserInfo(userInfo);
+            setUserToken(userInfo.token)
+  
+            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+            AsyncStorage.setItem('userToken', userInfo.token)
+          }else{
+            AsyncStorage.removeItem('userInfo')
+            AsyncStorage.removeItem('userToken')
+          }
+          
         })
         // if (res.status === 200){
         //   
@@ -51,19 +55,19 @@ export const AuthProvider = ({children}) => {
 
   const logout = () => {
     setIsLoading(true);
-    setUserToken('');
+    setUserToken(null);
     AsyncStorage.removeItem('userInfo')
     AsyncStorage.removeItem('userToken')
     setIsLoading(false);
   }
 
-  const isLoggedIn = async() => {
+  const isLoggedIn = async({ navigation }) => {
     try{
       setIsLoading(true);
       let userInfo = await AsyncStorage.getItem('userInfo');
       let userToken = await AsyncStorage.getItem('userToken');
 
-      console.log(userToken)
+      console.log('adaddadsa', userToken)
       userInfo = JSON.parse(userInfo);
 
       if ( userInfo ) {
@@ -71,6 +75,7 @@ export const AuthProvider = ({children}) => {
         setUserInfo(userInfo);
       }
       setIsLoading(false);
+      navigation.navigate('Home2')
     } catch(e) {
       console.log(`isLoggedIn in error ${e}`);
     }

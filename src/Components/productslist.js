@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import reactotron from 'reactotron-react-native';
 import { Provider } from 'react-redux';
-import { View, Text, Button, Pressable, Alert, StyleSheet,} from 'react-native';
+import { View, Text, Button, Pressable, Alert, StyleSheet, Image} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -24,7 +24,10 @@ const ProductsList = ({ data }) =>{
                   ? 'rgb(210, 230, 255)'
                   : 'white'
               }, styles.wrapperCustom]}>
-            <Text style={styles.text}>{item.name}</Text>
+                <View style={styles.cover}>
+                  <Image source={{uri : `https://${item.cover}`}} style={styles.image}/>
+                </View>
+              <Text style={styles.text}>{item.name}</Text>
           </Pressable>
           <Divider />
 
@@ -44,12 +47,23 @@ const styles = StyleSheet.create({
       color: 'black',
       fontSize: 20,
       fontWeight: '400',
+      textAlignVertical: "center",
+      marginLeft: 5,
+    },
+    cover:{
+      height:70,
+      width:70,
+    },
+    image:{
+      width: "100%",
+      height:"100%",
+      resizeMode: "cover"
     },
     buttonAltText: {
       
     },
     wrapperCustom: {
-      
+      flexDirection: "row",
       borderRadius: 8,
       padding: 6,
       margin: 4

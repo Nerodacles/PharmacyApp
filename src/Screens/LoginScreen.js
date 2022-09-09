@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useState, useRef, useContext } from 'react';
-import { View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -21,7 +21,7 @@ const LoginScreen = ({navigation}) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const [userToken, setUserToken] = useState(null);
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
 
 
   const [isError, setIsError] = useState(false);
@@ -62,8 +62,8 @@ const LoginScreen = ({navigation}) => {
             setUserInfo(userInfo);
             setUserToken(userInfo.token);
 
-            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-            AsyncStorage.setItem('userToken', userInfo.token);
+            // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+            // AsyncStorage.setItem('userToken', userInfo.token);
 
             // console.log(res.data)
             // console.log('User TOken: '+ userInfo.token)
@@ -93,7 +93,12 @@ const LoginScreen = ({navigation}) => {
   }
 
   return (
+        <View style={{
+            flex:1,
+            backgroundColor: '#FFFFFF'
+        }}>
             <View style={styles.card}>
+                <StatusBar backgroundColor= '#FFFFFF' barStyle='dark-content'/>
                 <Text style={styles.heading}>
                     {isLogin ? 'Login' : 'Sign up'}
                 </Text>
@@ -135,6 +140,7 @@ const LoginScreen = ({navigation}) => {
                     </View>    
                 </View>
             </View>
+        </View>
   ) 
 }
 
@@ -146,7 +152,7 @@ const styles = StyleSheet.create({
 //   },  
   card: {
       flex: 1,
-      backgroundColor: 'rgba(255, 255, 255, 0.4)',
+      backgroundColor: '#adadas',
       marginTop: '40%',
       borderRadius: 20,
       maxHeight: 380,
@@ -164,6 +170,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
   },
   form: {
+    backgroundColor: "#FFFFFF",
       flex: 1,
       justifyContent: 'space-between',
       paddingBottom: '5%',

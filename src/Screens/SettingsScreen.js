@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useState, useRef } from 'react';
-import { View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 const SettingsScreen = () => {
   return (
-    <View style={styles.card}>
+    <View style={styles.container}>
+      <StatusBar backgroundColor= '#FFF' barStyle='dark-content'/>
       <Text style={styles.heading}>Settings</Text>
       <View style={styles.form}>
         <Text style={{color: 'black'}}>{<Icon name='home-outline'/>} </Text>
@@ -22,14 +23,9 @@ const SettingsScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    marginTop: '40%',
-    borderRadius: 20,
-    maxHeight: 380,
-    paddingBottom: '30%',
-    marginHorizontal: 20
+    backgroundColor: '#FFF',
   },
   heading: {
     fontSize: 30,

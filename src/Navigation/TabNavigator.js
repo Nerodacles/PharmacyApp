@@ -11,13 +11,19 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     return(
-        <Tab.Navigator screenOptions={{
+        <Tab.Navigator initialRouteName='Home2' screenOptions={{
             tabBarShowLabel:false,
             headerShown: false,
-            tabBarStyle: {backgroundColor: '#AD40AF'},
-            tabBarInactiveTintColor:'#fff',
-            tabBarActiveTintColor:'cyan',
-            }}>
+            tabBarActiveTintColor:'#0062da',
+            style:{
+                backgroundColor: '#eff4f0',
+                justifyContent: "center",
+                paddingVertical: 15,
+                elevation: 2,
+                height: 65
+
+            }
+                }}>
             <Tab.Screen name="Home2" component={AppStack} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
@@ -30,7 +36,7 @@ const TabNavigator = () => {
             }}/>
             <Tab.Screen name="Profile" component={ProfileScreen}  options={{
                 tabBarIcon: ({color, size}) => {
-                    return <Icon name="person-circle-outline" color={color} size={40} />;
+                    return <Icon name="person-circle-outline" color={color} size={size} />;
                 }
             }}/>
         </Tab.Navigator>
