@@ -28,7 +28,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           tag_name: v1.0.0
-          asset_path: android/app/build/outputs/apk/debug/app-debug.apk
+          asset_path: ./android/app/build/outputs/apk/debug/app-debug.apk
           asset_name: pharmacyapp.apk
           asset_content_type: application/zip
 
