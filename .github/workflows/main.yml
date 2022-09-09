@@ -23,13 +23,10 @@ jobs:
       - name: Build Android Release
         run: cd android && ./gradlew assembleRelease
       - name: Create release and upload apk
-        uses: underwindfall/create-release-with-debugapk@v2.0.0
+        uses: yurakurets/action-release-debugapk@master
         env:
-            GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          tag_name: v1.0.0
-          asset_path: ./android/app/build/outputs/apk/debug/app-debug.apk
-          asset_name: pharmacyapp.apk
-          asset_content_type: application/zip
-
-#         APP_FOLDER: android/app/build/outputs/apk/release
+          REPO_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          APK_FOLDER: android/app/build/outputs/apk/release/app-release.apk
+          APP_FOLDER: android/app
+          RELEASE_TITLE: New Build
