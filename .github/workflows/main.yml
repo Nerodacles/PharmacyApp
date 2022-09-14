@@ -1,9 +1,5 @@
 name: Build & Publish Release APK
-
-on:
-  push:
-    tags:
-      - '*'
+on: workflow_dispatch
 
 jobs:
   generate:
