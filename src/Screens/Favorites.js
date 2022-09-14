@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useState, useEffect, useContext} from 'react';
-import { View, Text, Button, StatusBar, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Platform, Alert, Pressable } from 'react-native';
+import { ActivityIndicator, View, Text, Button, StatusBar, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Platform, Alert, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -15,6 +15,7 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 const Favorites = ({ navigation }) => {
   const {userToken}= useContext(AuthContext);
   const [detalles, setDetalles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
   const [producto, setProductos] = useState([]);
 
   axiosInstance.interceptors.request.use(
@@ -31,17 +32,27 @@ const Favorites = ({ navigation }) => {
   
   useEffect(() => {
     setProductos([])
+    setIsLoading(true)
     const getFav = async() =>{
       const response = await axiosInstance.get(`favs`)
         response.data.forEach(element => {
           axiosInstance.get(`api/getOne/${element}`).then((res) => {
             setProductos(oldArray => [...oldArray, res.data.data])
+            setIsLoading(false)
           })
         }
         )
       }
     getFav()
     }, [])
+
+  if ( isLoading ){
+    return(
+    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: '#FFF'}}>
+      <ActivityIndicator size="large" color="#4cc3eb" style={{opacity: 1}} />
+    </View>)
+  } 
+   
 
   return (
     <View style={styles.container}>
@@ -99,21 +110,21 @@ const styles = StyleSheet.create({
     paddingTop:15,
   },
   backbtn: {
-    width:'5%',
+    width:'10%',
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: '10%',
     // marginBottom: '10%',
     color: 'black',
     textAlign: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     width:'90%',
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: '10%',
-    marginLeft: -5,
+    marginLeft: '-5%',
     // marginBottom: '10%',
     color: 'black',
     textAlign: 'center',

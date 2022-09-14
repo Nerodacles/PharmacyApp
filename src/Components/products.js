@@ -12,7 +12,8 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
-  Text
+  Text,
+  ActivityIndicator
   } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
@@ -21,11 +22,14 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const Products = ({navigation}) => {
   const [data, setData] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     axiosInstance.get('api/getAll/').then((result) => {
       setData(result.data)
+      setIsLoading(false)
     });
   }, []);
 
@@ -42,6 +46,14 @@ const Products = ({navigation}) => {
       });
     })
   }, []);
+
+  if ( isLoading ){
+    return(
+    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: '#FFF'}}>
+      <ActivityIndicator size="large" color="#4cc3eb" style={{opacity: 1}} />
+    </View>)
+  } 
+ 
 
     return (
       

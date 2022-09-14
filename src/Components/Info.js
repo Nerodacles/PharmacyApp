@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -15,6 +15,7 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 function Info ({ route }) {
   const {userToken}= useContext(AuthContext);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false)
   const [detalles, setDetalles] = useState([]);
   const [favorite, setFavorite] = useState([])
   const [data, setData] = useState([]);
@@ -31,9 +32,11 @@ function Info ({ route }) {
   )
   
   useEffect(() => {
+    setIsLoading(true)
     axiosInstance.get(`api/getOne/${id}`).then((response) => {
       setDetalles(response.data.data)
       setFavorite(response.data.favorite)
+      setIsLoading(false)
     });
   }, []);
 
@@ -43,7 +46,12 @@ function Info ({ route }) {
     });
   }
 
-  
+  if ( isLoading ){
+    return(
+    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: '#FFF'}}>
+      <ActivityIndicator size="large" color="#4cc3eb" style={{opacity: 1}} />
+    </View>)
+  } 
  
   return (
     <View style={ style.container }>

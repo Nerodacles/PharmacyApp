@@ -10,6 +10,7 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const ProductsList = ({ data }) =>{
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {data.map((item) => (
