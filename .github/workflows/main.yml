@@ -2,22 +2,25 @@ name: Build & Publish Release APK
 on: workflow_dispatch
 
 jobs:
-  generate:
+  releaseJob:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.2.0
+      - name: Checkout main branch to calculate changelog
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+          fetch-depth: 0
+
+      - name: Calculate version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
         with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.previoustag.outputs.tag }}
+          github_token: ${{ secrets.TOKEN }}
+
+      - name: Get updated commit SHA
+        run: |
+          echo "##[set-output name=commit_id;]$(git rev-parse HEAD)"
+        id: updated_sha
           
   build-android:
     runs-on: ubuntu-latest
@@ -64,14 +67,16 @@ jobs:
         with:
           name: Apk Bundle
           path: pharmacyapp-latest.apk
-        
-      - name: Create APK Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+          
+      - uses: fregante/release-with-changelog@v3
         with:
-          repo_token: "${{ secrets.TOKEN }}"
-          automatic_release_tag: ${{ steps.semvers.outputs.patch }}
-          prerelease: false
-          draft: true
-          title: ${{ steps.semvers.outputs.patch }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.TOKEN }}
           files: |
             pharmacyapp-latest.apk
+          commit-template: '- {date}: {title} ← {hash}'
+          template: |
+              ### Changelog
+              {commits}
+              Compare: {range}
+              ❤
