@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import reactotron from 'reactotron-react-native';
-import { Provider } from 'react-redux';
-import { View, Text, Button, Pressable, Alert, StyleSheet, Image} from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Divider } from 'react-native-paper';
+
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
@@ -29,7 +27,6 @@ const ProductsList = ({ data }) =>{
                 </View>
               <Text style={styles.text}>{item.name}</Text>
           </Pressable>
-          <Divider />
 
         </View>
 
@@ -40,7 +37,9 @@ const ProductsList = ({ data }) =>{
 
 const styles = StyleSheet.create({
     container: {
-        margin: 15,
+      flex:1,
+      marginTop: 10,
+      marginHorizontal: 2,
       justifyContent: "center",
     },
     text: {
@@ -53,6 +52,7 @@ const styles = StyleSheet.create({
     cover:{
       height:70,
       width:70,
+      margin: 5,
     },
     image:{
       width: "100%",
@@ -64,17 +64,26 @@ const styles = StyleSheet.create({
     },
     wrapperCustom: {
       flexDirection: "row",
-      borderRadius: 8,
-      padding: 6,
-      margin: 4
+      borderRadius: 5,
+      padding: 4,
+      marginVertical: 3,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+
+      elevation: 3,
     },
-    logBox: {
-      padding: 20,
-      margin: 10,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: '#f0f0f0',
-      backgroundColor: '#FFF'
-    }
+    // logBox: {
+    //   padding: 20,
+    //   margin: 10,
+    //   borderWidth: StyleSheet.hairlineWidth,
+    //   borderColor: '#f0f0f0',
+    //   backgroundColor: '#FFF'
+    // }
   });
   
 

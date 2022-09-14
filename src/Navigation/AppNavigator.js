@@ -9,9 +9,10 @@ const AppNavigator = () => {
   const {isLoading, userToken} = useContext(AuthContext);
 
   if ( isLoading ){
-    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-      <ActivityIndicator animating={true} size="large" color="#0000ff" style={{opacity: 1}} />
-    </View>
+    return(
+    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: '#FFF'}}>
+      <ActivityIndicator size="large" color="#4cc3eb" style={{opacity: 1}} />
+    </View>)
   } 
   return (
     <NavigationContainer>

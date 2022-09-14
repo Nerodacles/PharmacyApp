@@ -29,11 +29,11 @@ const TabNavigator = () => {
                     return <Icon name="home-outline" color={color} size={size} />
                 }
             }} />
-            <Tab.Screen name="Settings" component={SettingsScreen} options={{
+            {/* <Tab.Screen name="Settings" component={SettingsScreen} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="settings-outline" color={color} size={size} />
                 }
-            }}/>
+            }}/> */}
             <Tab.Screen name="Profile" component={ProfileScreen}  options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="person-circle-outline" color={color} size={size} />;

@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { View, Text, TouchableOpacity, StatusBar, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable} from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = ({ navigation }) =>{
@@ -11,11 +11,11 @@ const ProfileScreen = ({ navigation }) =>{
             <View style={style.cont}>
                 <View style={style.cont2}>
                     <View style={style.options}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Favorito')}>
+                        <Pressable onPress={() => navigation.navigate('Favorito')} style={{width: '100%'}}>
                             <Text style={style.subtitle}>
                                 Favoritos
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                     <View style={style.options}>
                         <Text style={style.subtitle}>
@@ -65,7 +65,7 @@ const style =StyleSheet.create({
     cont:{
         flex:1,
         flexDirection:"column",
-        backgroundColor:"#4cc3eb",
+        backgroundColor:"#0062da",
         width:"95%",
         borderRadius:50,
         paddingHorizontal:20,
@@ -83,22 +83,25 @@ const style =StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginTop: 10,
+        color: '#FFF'
     },
     btn:{
         padding:10,
         borderRadius: 20,
         marginTop: 100,
         marginHorizontal: 20,
-        backgroundColor: "#0062da",
+        backgroundColor: "#4cc3eb",
         alignItems: "center"
     },
     btnText:{
         fontSize:20,
+        color: "#FFF"
     },
     text:{
         paddingTop:10,
         fontSize: 18,
-        lineHeight:25
+        lineHeight:25,
+        color: '#FFF'
     },
     cont2:{
         marginVertical:25,

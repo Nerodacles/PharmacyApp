@@ -100,7 +100,7 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.card}>
                 <StatusBar backgroundColor= '#FFFFFF' barStyle='dark-content'/>
                 <Text style={styles.heading}>
-                    {isLogin ? 'Login' : 'Sign up'}
+                    {isLogin ? 'Inicio de Sesión' : 'Crear Cuenta'}
                 </Text>
                 <View style={styles.form}>
                     <View style={styles.inputs}>
@@ -132,10 +132,10 @@ const LoginScreen = ({navigation}) => {
                         
                         <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
                         <TouchableOpacity style={styles.button} onPress={isLogin ? () => {login(username, password)} : onSubmit}>
-                            <Text style={styles.buttonText}>Done</Text>
+                            <Text style={styles.buttonText}>{isLogin ? 'Iniciar Sesión' : 'Registrarte'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttonAlt} onPress={onChangeHandler}>
-                            <Text style={styles.buttonAltText}>{isLogin ? 'Sign Up' : 'Log In'}</Text>
+                            <Text style={styles.buttonAltText}>{isLogin ? 'Crear nueva cuenta' : '¿Tienes una cuenta? Inicia sesión'}</Text>
                         </TouchableOpacity>
                     </View>    
                 </View>

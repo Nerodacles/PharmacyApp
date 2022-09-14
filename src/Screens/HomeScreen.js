@@ -1,9 +1,8 @@
 // In App.js in a new project
 
 import React, { useContext } from 'react';
-import { View, Text, Button, StatusBar, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
-import { LinearGradient } from 'react-native-linear-gradient';
 
 const HomeScreen = ({navigation}) => {
     const {userInfo} = useContext(AuthContext);
@@ -13,11 +12,20 @@ const HomeScreen = ({navigation}) => {
             backgroundColor: "#FFF" }}>
             
             <View style={{
-                backgroundColor:"#4cc3eb",
+                backgroundColor:"#0062da",
                 height: "20%",
                 margin:10,
                 borderRadius:20,
-                paddingHorizontal:20
+                paddingHorizontal:20,
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 7,
+                },
+                shadowOpacity: 0.41,
+                shadowRadius: 9.11,
+
+                elevation: 14,
             }}>
                 <View style={{
                     flexDirection:"row",

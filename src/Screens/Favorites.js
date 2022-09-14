@@ -1,17 +1,18 @@
 // In App.js in a new project
 
-import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { View, Text, Button, StatusBar, Image, StyleSheet, TouchableOpacity, TextInput, Platform, Alert, Pressable } from 'react-native';
+import React, { useState, useEffect, useContext} from 'react';
+import { View, Text, Button, StatusBar, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Platform, Alert, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import Feather from 'react-native-vector-icons/Feather'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-const Favorites = () => {
+const Favorites = ({ navigation }) => {
   const {userToken}= useContext(AuthContext);
   const [detalles, setDetalles] = useState([]);
   const [producto, setProductos] = useState([]);
@@ -44,19 +45,41 @@ const Favorites = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Favoritos</Text>
-      {producto.map((item) => (
-        <View style={styles.cont}>
-          <View style={styles.cont2}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backbtn}>
+          <Feather name="chevron-left" color="#000" size={25} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Favoritos</Text>
+      </View>
+      {/* <FlatList 
+        data={producto}
+        numColumns={2}
+        style={styles.cont}
+        renderItem={({item: item}) => 
+        <View style={styles.cont2}>
+          <View style={styles.cover}>
+            <Image source={{uri: `https://${item.cover}`}} style={styles.image} />
+          </View>
+          <Text style={styles.text}>{item.name}</Text>
+        </View>} /> */}
+        <FlatList 
+        data={producto}
+        numColumns={2}
+        style={styles.cont}
+        renderItem={({item: item}) => 
+          <Pressable 
+            onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed
+                  ? 'rgb(210, 230, 255)'
+                  : 'white'
+              }, styles.cont2]}>
             <View style={styles.cover}>
               <Image source={{uri: `https://${item.cover}`}} style={styles.image} />
             </View>
-            <Text style={styles.text}>{item.name}</Text>
-          </View>
-        </View>
-
-      ))}
-      {/* <Text style={style.title}>{producto.name}</Text> */}
+            <Text style={styles.text}>{item.name} </Text>
+          </Pressable>} />
     </View>
   ) 
 }
@@ -68,13 +91,33 @@ const styles = StyleSheet.create({
     alignItems:"center",
     // justifyContent: "center",
   },
-  title: {
+  header:{
+    flexDirection:"row",
+    alignItems:"center",
+    width:"100%",
+    paddingHorizontal:20,
+    paddingTop:15,
+  },
+  backbtn: {
+    width:'5%',
     fontSize: 30,
     fontWeight: 'bold',
-    marginTop: '10%',
+    marginBottom: '10%',
     // marginBottom: '10%',
     color: 'black',
-    textAlign: 'center'
+    textAlign: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    width:'90%',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: '10%',
+    marginLeft: -5,
+    // marginBottom: '10%',
+    color: 'black',
+    textAlign: 'center',
+    alignItems: 'center'
   },
   text: {
     fontSize: 20,
@@ -82,6 +125,7 @@ const styles = StyleSheet.create({
     // marginBottom: '10%',
     color: 'black',
     textAlign: 'center',
+    justifyContent: 'center'
   },
   cover:{
     height:100,
@@ -94,12 +138,25 @@ const styles = StyleSheet.create({
   },
   cont: {
     flexDirection: "row",
+
   },
   cont2: {
     flexDirection: "column",
     borderRadius: 8,
-    padding: 6,
-    margin: 4,
+    paddingHorizontal: 10,
+    paddingVertical:5,
+    margin: 5,
+    alignItems:"center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
 
 });

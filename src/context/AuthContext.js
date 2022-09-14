@@ -28,6 +28,7 @@ export const AuthProvider = ({children}) => {
   
             AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
             AsyncStorage.setItem('userToken', userInfo.token)
+            setIsLoading(false)
           }else{
             AsyncStorage.removeItem('userInfo')
             AsyncStorage.removeItem('userToken')
@@ -61,13 +62,12 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   }
 
-  const isLoggedIn = async({ navigation }) => {
+  const isLoggedIn = async() => {
     try{
       setIsLoading(true);
       let userInfo = await AsyncStorage.getItem('userInfo');
       let userToken = await AsyncStorage.getItem('userToken');
 
-      console.log('adaddadsa', userToken)
       userInfo = JSON.parse(userInfo);
 
       if ( userInfo ) {
@@ -75,7 +75,6 @@ export const AuthProvider = ({children}) => {
         setUserInfo(userInfo);
       }
       setIsLoading(false);
-      navigation.navigate('Home2')
     } catch(e) {
       console.log(`isLoggedIn in error ${e}`);
     }

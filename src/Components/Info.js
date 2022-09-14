@@ -74,7 +74,7 @@ function Info ({ route }) {
         </View>
         <View style={style.cont3}>
           <TouchableOpacity onPress={AddFav}>
-            <FontAwesome name={favorite !== true ? "heart-o" : "heart"} color="#000" size={30} />
+            <FontAwesome name={favorite !== true ? "heart-o" : "heart"} color={favorite !== true ? "#000" : "#E2443B"} size={30} />
           </TouchableOpacity>
           <Text style={style.price}>RD${detalles.price}</Text>
           <TouchableOpacity style={style.btn} onPress={() => navigation.navigate('Home')}>
