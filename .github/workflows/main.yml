@@ -79,10 +79,6 @@ jobs:
               Compare: {range}
               ❤
               
-  ReleaseAPK:
-    runs-on: ubuntu-latest
-    needs: build-android
-    steps:
       - name: Upload apk to release
         uses: svenstaro/upload-release-action@v2
         with:
