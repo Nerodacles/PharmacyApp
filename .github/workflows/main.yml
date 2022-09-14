@@ -72,11 +72,22 @@ jobs:
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           token: ${{ secrets.TOKEN }}
-          files: |
-            pharmacyapp-latest.apk
           commit-template: '- {date}: {title} ← {hash}'
           template: |
               ### Changelog
               {commits}
               Compare: {range}
               ❤
+              
+  ReleaseAPK:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload apk to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.TOKEN }}
+          file: pharmacyapp-latest.apk
+          asset_name: pharmacyapp-latest
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "This is my release text"
