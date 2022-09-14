@@ -16,7 +16,7 @@ const Search = ({navigation}) => {
   const {userToken}= useContext(AuthContext);
   const [isChanged, setIsChanged] = useState(true);
   const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
 
 const [producto, setProductos] = useState([]);
 
@@ -63,6 +63,7 @@ const [producto, setProductos] = useState([]);
         const response = await axiosInstance.post(`search/tags`, {
             tags: tagTrim
         })
+        console.log(tagTrim)
         setProductos(response.data)
         
       }
