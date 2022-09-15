@@ -65,7 +65,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Apk Bundle
+          name: pharmacyapp-latest.apk
           path: pharmacyapp-latest.apk
           
       - uses: fregante/release-with-changelog@v3
