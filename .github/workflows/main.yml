@@ -78,9 +78,13 @@ jobs:
               {commits}
               Compare: {range}
               
+      - name: Checkout
+        uses: actions/checkout@v2
+        
       - name: Release To Git
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/' + ${{ steps.tag_version.outputs.new_tag }})
+#         if: startsWith(github.ref, 'refs/tags/' + ${{ steps.tag_version.outputs.new_tag }})
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: pharmacyapp-latest.apk
         env:
