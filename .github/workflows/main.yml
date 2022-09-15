@@ -69,6 +69,7 @@ jobs:
           path: pharmacyapp-latest.apk
           
       - uses: fregante/release-with-changelog@v3
+        id: release
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           token: ${{ secrets.TOKEN }}
@@ -79,12 +80,12 @@ jobs:
               
               Compare: {range}
               
-      - name: Upload APK to Release
-        uses: xresloader/upload-to-github-release@v1
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          file: "pharmacyapp-latest.apk"
-          overwrite: true
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          draft: false
+          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./pharmacyapp-latest.apk
+          asset_name: pharmacyapp-latest.apk
+          asset_content_type: application/vnd.android.package-archive
