@@ -1,3 +1,6 @@
-# PharmacyApp Mobile App
+# Company_LandingPage
+This is a LandingPage for PharmacyAPP
 
-This is a thesis for Ucateci
+Company Website: [https://pharmacyapp.jmcv.codes](https://pharmacyapp.jmcv.codes)
+
+Site Demo: [Here](https://nerodacles.github.io/Company_LandingPage/index.html)
