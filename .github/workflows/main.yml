@@ -77,13 +77,12 @@ jobs:
               ### Changelog
               {commits}
               Compare: {range}
-              ❤
               
       - name: Upload apk to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.TOKEN }}
           file: pharmacyapp-latest.apk
-          asset_name: pharmacyapp-latest
-          tag: latest
+          asset_name: pharmacyapp-latest.apk
+          tag: '${{ steps.tag_version.outputs.new_tag }}'
           overwrite: true
