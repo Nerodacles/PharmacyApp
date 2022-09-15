@@ -15,7 +15,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          upload_url: https://github.com/Nerodacles/PharmacyApp/releases/tag/${{ steps.tag_version.outputs.new_tag }}
+          upload_url: https://github.com/Nerodacles/PharmacyApp/releases/tag/v1.0.30
           asset_path: app.json
           asset_name: app.json
           asset_content_type: application/json
