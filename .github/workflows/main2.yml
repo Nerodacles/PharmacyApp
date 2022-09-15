@@ -16,4 +16,4 @@ jobs:
         with:
           file: "app.json"
           overwrite: true
-          update_latest_release: true
+          tag_name: v1.0.30
