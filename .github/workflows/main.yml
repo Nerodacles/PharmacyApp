@@ -70,7 +70,7 @@ jobs:
           
       - uses: fregante/release-with-changelog@v3
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
+          tag: latest
           token: ${{ secrets.TOKEN }}
           commit-template: '- {date}: {title} ← {hash}'
           template: |
@@ -84,5 +84,5 @@ jobs:
           repo_token: ${{ secrets.TOKEN }}
           file: pharmacyapp-latest.apk
           asset_name: pharmacyapp-latest.apk
-          tag: '${{ steps.tag_version.outputs.new_tag }}'
+          tag: latest
           overwrite: true
