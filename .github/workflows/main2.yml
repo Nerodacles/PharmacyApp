@@ -1,0 +1,21 @@
+name: Build & Publish Release APK
+on: workflow_dispatch
+
+jobs:
+          
+  build-android:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout main branch to calculate changelog
+        uses: actions/checkout@v2
+        
+      - name: Upload APK to Release
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: https://github.com/Nerodacles/PharmacyApp/releases/tag/${{ steps.tag_version.outputs.new_tag }}
+          asset_path: app.json
+          asset_name: app.json
+          asset_content_type: application/json
