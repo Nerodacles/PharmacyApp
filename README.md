@@ -1,4 +1,4 @@
-# Company_LandingPage
+# PharmacyAPP Landing Page
 This is a LandingPage for PharmacyAPP
 
 Company Website: [https://pharmacyapp.jmcv.codes](https://pharmacyapp.jmcv.codes)
