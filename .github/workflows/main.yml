@@ -68,21 +68,21 @@ jobs:
           name: Apk Bundle
           path: pharmacyapp-latest.apk
           
-      - uses: fregante/release-with-changelog@v3
-        with:
-          tag: latest
-          token: ${{ secrets.TOKEN }}
-          commit-template: '- {date}: {title} ← {hash}'
-          template: |
-              ### Changelog
-              {commits}
-              Compare: {range}
-              
       - name: Upload apk to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.TOKEN }}
           file: pharmacyapp-latest.apk
           asset_name: pharmacyapp-latest.apk
-          tag: latest
+          tag: ${{ steps.tag_version.outputs.new_tag }}
           overwrite: true
+          
+      - uses: fregante/release-with-changelog@v3
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.TOKEN }}
+          commit-template: '- {date}: {title} ← {hash}'
+          template: |
+              ### Changelog
+              {commits}
+              Compare: {range}
