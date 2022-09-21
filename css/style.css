@@ -837,7 +837,6 @@ select.form-control.has-value{
     left: 0;
 }
 
-
 /*hero section 2*/
 .divider {
     position: relative;
@@ -913,6 +912,7 @@ select.form-control.has-value{
     flex: 0 0 38%;
     top: -70px;
 }
+
 @media (min-width: 320px) and (max-width: 768px){
     .video-app-wrap{
         top: 0;
