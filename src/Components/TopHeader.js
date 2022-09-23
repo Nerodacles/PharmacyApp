@@ -3,33 +3,33 @@
 
  
 const TopHeader = () => {
-    // const isDarkMode = useColorScheme() === 'dark';
-    return (
-      <ImageBackground
-        accessibilityRole="image"
-        testID="new-app-screen-header"
-        source={require('../../android/app/src/main/res/mipmap-hdpi/logo_black_rounded.png')}
-        style={[
-          styles.background,
-          // {
-          //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-          // },
-        ]}
-        imageStyle={styles.logo}>
+    // // const isDarkMode = useColorScheme() === 'dark';
+    // return (
+    //   <ImageBackground
+    //     accessibilityRole="image"
+    //     testID="new-app-screen-header"
+    //     source={require('../../android/app/src/main/res/mipmap-hdpi/logo_black_rounded.png')}
+    //     style={[
+    //       styles.background,
+    //       // {
+    //       //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    //       // },
+    //     ]}
+    //     imageStyle={styles.logo}>
      
-        <Text
-          style={[
-            styles.text,
-            // {
-            //   color: isDarkMode ? Colors.white : Colors.black,
-            // },
-          ]}>
-          Welcome to Our App
-          {'\n'}
-          PharmacyApp
-        </Text>
-      </ImageBackground>
-    );
+    //     <Text
+    //       style={[
+    //         styles.text,
+    //         // {
+    //         //   color: isDarkMode ? Colors.white : Colors.black,
+    //         // },
+    //       ]}>
+    //       Welcome to Our App
+    //       {'\n'}
+    //       PharmacyApp
+    //     </Text>
+    //   </ImageBackground>
+    // );
   };
   
   const styles = StyleSheet.create({

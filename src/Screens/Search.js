@@ -16,7 +16,7 @@ const Search = ({navigation}) => {
   const {userToken}= useContext(AuthContext);
   const [isChanged, setIsChanged] = useState(true);
   const [name, setName] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState('');
 
 const [producto, setProductos] = useState([]);
 
@@ -25,7 +25,7 @@ const [producto, setProductos] = useState([]);
   }
 
   const onChangeSearchbyTags = (tags) => {
-    setTags([])
+    setTags('')
     setTags(oldArray => [...oldArray, tags])
   }
 
