@@ -85,5 +85,5 @@ jobs:
           repo_token: ${{ secrets.TOKEN }}
           file: pharmacyapp-latest.apk
           asset_name: pharmacyapp-latest
-          tag: ${{ steps.tag_version.outputs.new_tag }}
+          tag: ${{ github.ref }}
           overwrite: true
