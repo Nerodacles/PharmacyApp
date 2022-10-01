@@ -5076,7 +5076,7 @@
   "resolved" "https://registry.npmjs.org/lodash.truncate/-/lodash.truncate-4.4.2.tgz"
   "version" "4.4.2"
 
-"lodash@^4.17.10", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.21", "lodash@^4.7.0":
+"lodash@^4.17.10", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.21", "lodash@^4.7.0":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -6235,11 +6235,6 @@
   "resolved" "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz"
   "version" "2.6.2"
 
-"react-native-multi-selectbox@^1.5.0":
-  "integrity" "sha512-yRxV8PPD0TIRoXK4WduHcADzroB2UWGbJIlKEGkvz8sPPs80o8wdJDthuqbvO7U6rIP2ABb/TRaJAFAxFTi8jw=="
-  "resolved" "https://registry.npmjs.org/react-native-multi-selectbox/-/react-native-multi-selectbox-1.5.0.tgz"
-  "version" "1.5.0"
-
 "react-native-paper@^4.12.3":
   "integrity" "sha512-Rdkm9ulvAo3vGb4sQo4lrASgdYuOGZh2CbcZc5Lp9KwmGf0yHewesUqvIPWYiA1JvzEzimdtVf9w8cpa7TaIZQ=="
   "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.12.3.tgz"
@@ -6267,7 +6262,7 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native-svg@^12.1.0", "react-native-svg@^13.2.0":
+"react-native-svg@^13.2.0":
   "integrity" "sha512-bDvMeFReA3F9pVp0EhACPrEerRcITzTu9N2m2lAPinhIMVvwzGzVXyFsXI8fCMSoeOIh+77hKvukoCedh06tLw=="
   "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.2.0.tgz"
   "version" "13.2.0"
