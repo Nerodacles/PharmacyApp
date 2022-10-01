@@ -22,12 +22,14 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const Products = ({navigation}) => {
   const [data, setData] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
 
   useEffect(() => {
     setIsLoading(true)
     axiosInstance.get('api/getAll/').then((result) => {
+      console.log(result.data)
       setData(result.data)
       setIsLoading(false)
     });

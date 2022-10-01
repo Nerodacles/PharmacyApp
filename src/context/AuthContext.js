@@ -53,7 +53,6 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
     }
   }
-
   const logout = () => {
     setIsLoading(true);
     setUserToken(null);
@@ -61,7 +60,6 @@ export const AuthProvider = ({children}) => {
     AsyncStorage.removeItem('userToken')
     setIsLoading(false);
   }
-
   const isLoggedIn = async() => {
     try{
       setIsLoading(true);

@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/AuthContext';
+import { CartContext } from '../context/CartContext';
 
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -20,6 +21,9 @@ function Info ({ route }) {
   const [favorite, setFavorite] = useState([])
   const [data, setData] = useState([]);
   const { id } = route.params;
+ 
+  const {getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, cartQuantity} = useContext(CartContext)
+  const quantity = getItemQuantity(id)
 
   axiosInstance.interceptors.request.use(
     config => {
@@ -59,9 +63,31 @@ function Info ({ route }) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="chevron-left" color="#000" size={25} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Feather name="shopping-cart" color="#000" size={25} /> 
-        </TouchableOpacity>
+        {cartQuantity > 0 && (<TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <Feather name="shopping-cart" color="#000" size={25} />
+          <View
+            style={{     
+              position: 'absolute',
+              backgroundColor: 'red',
+              width: 16,
+              height: 16,
+              borderRadius: 15 / 2,
+              right: -8,
+              top: -5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: "#FFFFFF",
+                fontSize: 10,
+              }}>
+              {cartQuantity}
+            </Text>
+          </View>
+        </TouchableOpacity>)}
       </View>
       <View style={style.cover}>
         <Image source={{uri: `https://${detalles.cover}`}} style={style.img}/>
@@ -85,7 +111,7 @@ function Info ({ route }) {
             <FontAwesome name={favorite !== true ? "heart-o" : "heart"} color={favorite !== true ? "#000" : "#E2443B"} size={30} />
           </TouchableOpacity>
           <Text style={style.price}>RD${detalles.price}</Text>
-          <TouchableOpacity style={style.btn} onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity style={style.btn} onPress={() => increaseCartQuantity(id)}>
             <Text style={style.btnText}>Comprar</Text>
           </TouchableOpacity>
         </View>

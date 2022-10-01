@@ -14,6 +14,7 @@ import { StyleSheet } from 'react-native';
 
 import { AuthProvider } from './context/AuthContext';
 import { AppNavigator } from './Navigation';
+import { CartProvider } from './context/CartContext';
 
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
@@ -27,7 +28,9 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 const App = () => {
   return (
     <AuthProvider>
-      <AppNavigator />
+      <CartProvider>
+        <AppNavigator />
+      </CartProvider>
     </AuthProvider>
   );
 };
