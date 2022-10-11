@@ -18,6 +18,13 @@ const ProfileScreen = ({ navigation }) =>{
                         </Pressable>
                     </View>
                     <View style={style.options}>
+                        <Pressable onPress={() => navigation.navigate('Ordenes Pasadas')} style={{width: '100%'}}>
+                            <Text style={style.subtitle}>
+                                Ordenes Pasadas
+                            </Text>
+                        </Pressable>
+                    </View>
+                    <View style={style.options}>
                         <Text style={style.subtitle}>
                             Nombre de Usuario:
                         </Text>

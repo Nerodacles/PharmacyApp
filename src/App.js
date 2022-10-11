@@ -20,10 +20,7 @@ if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
 }
 
-
-
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
-
 
 const App = () => {
   return (
