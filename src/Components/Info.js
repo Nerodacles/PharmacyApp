@@ -19,8 +19,10 @@ function Info ({ route }) {
   const [isLoading, setIsLoading] = useState(false)
   const [detalles, setDetalles] = useState([]);
   const [favorite, setFavorite] = useState([])
+  const [tags, setTags] = useState([])
   const [data, setData] = useState([]);
   const { id } = route.params;
+  console.log(id)
  
   const {getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, cartQuantity} = useContext(CartContext)
   const quantity = getItemQuantity(id)
@@ -35,14 +37,17 @@ function Info ({ route }) {
     }
   )
   
+ 
+
   useEffect(() => {
-    setIsLoading(true)
     axiosInstance.get(`api/getOne/${id}`).then((response) => {
+      setIsLoading(true)
       setDetalles(response.data.data)
       setFavorite(response.data.favorite)
+      setTags(response.data.data.tags)
       setIsLoading(false)
-    });
-  }, []);
+    })
+  }, [id]);
 
   const AddFav =()=>{
     axiosInstance.post(`favs/modify/${id}`).then((res) => {
@@ -97,14 +102,8 @@ function Info ({ route }) {
         <View style={style.cont2}>
           <Text style={style.title}>{detalles.name}</Text>
           <Text style={style.subtitle}>Descripción</Text>
-          {/* <View style={style.cont3}>
-            <View style={style.selected}> 
-            <View style={style.c2} />
-            </View>
-            <View style={style.c2} />
-            <View style={style.c3} />
-          </View> */}
           <Text style={style.description}> {detalles.description} </Text>
+          <Text style={[style.description, {opacity: 0.4, marginTop: '25%'}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
         </View>
         <View style={style.cont3}>
           <TouchableOpacity onPress={AddFav}>
@@ -131,7 +130,7 @@ const style = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginTop: 30,
+    marginTop: 5,
     color:"#FFF",
     textAlign:"center"
  },
@@ -156,33 +155,6 @@ btn:{
 btnText:{
   fontSize:20,
   color:"#FFF"
-},
-c3:{
-  height:20,
-  width:20,
-  borderRadius: 15,
-  backgroundColor: "#529CC0"
-},
-c2:{
-  height:20,
-  width:20,
-  borderRadius: 15,
-  backgroundColor: "#529C47"
-},
-c1:{
-  height:20,
-  width:20,
-  borderRadius: 15,
-  backgroundColor: "#E2443B"
-},
-selected:{
-  borderColor: "#E2443B",
-  height:30,
-  width:30,
-  borderRadius:24,
-  borderWidth:2,
-  alignItems:"center",
-  justifyContent:"center",
 },
 header:{
   flexDirection:"row",

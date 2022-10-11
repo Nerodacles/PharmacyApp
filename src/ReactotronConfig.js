@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NativeModules } from 'react-native';
 
 // const host = NativeModules.SourceCode.scriptURL.split('://')[1].split(':')[0]
-let host = "192.168.0.10"
+let host = "192.168.0.17"
 
 Reactotron.setAsyncStorageHandler(AsyncStorage)
   .configure({

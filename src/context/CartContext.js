@@ -21,12 +21,15 @@ export const CartProvider = ({children}) => {
     }
 
     const increaseCartQuantity = (id) => {
+        if (cartItems.length > 3){
+            return console.log('Error')
+        }
         setCartItems(currItems => {
             if (currItems.find(item => item.id === id) == null) {
                 return [...currItems, {id, quantity: 1}]
             }else {
                 return currItems.map(item => {
-                    if (item.id === id) {
+                    if (item.id === id && item.quantity < 10) {
                         return { ...item, quantity: item.quantity + 1 }
                     }else {
                         return item

@@ -72,6 +72,7 @@ const ShoppingCart = ({ route }) => {
     const createOrder = async() =>{
       const response = await axiosInstance.post(`orders`,  {drugs: cartItems})
       setOrder(response.data.drugs)
+      console.log(order)
       setCartItems([])
     }
 
@@ -99,17 +100,18 @@ const ShoppingCart = ({ route }) => {
             <Text style={styles.totalText}>
               Total: RD${cartItems.reduce((total, cartItem) => {
                 const item = itemInCart.find(item => item.id === cartItem.id)
+                console.log('prueba:' + cartItems.length)
                 return (total + (item?.price || 0) * cartItem.quantity)
               }, 0)}
             </Text>
          </View>
-          <TouchableOpacity style={styles.Comprarbtn} onPress={createOrder}>
+        
+      </View>)}
+          <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('PaymentMet')}>
             <Text style={styles.ComprarbtnText}>
               Comprar
             </Text>
           </TouchableOpacity>
-        
-      </View>)}
 
       {/* <FlatList 
         data={producto}

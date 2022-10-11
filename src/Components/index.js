@@ -3,4 +3,5 @@ export { default as Loading } from './loadingscreen';
 export { default as Products } from './products';
 export { default as ProductsList } from './productslist';
 export { default as Info } from './Info';
+export { default as PaymentMethod } from './PaymentMethod';
 

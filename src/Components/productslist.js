@@ -12,7 +12,7 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const ProductsList = ({ data }) =>{
   const navigation = useNavigation();
-  const { getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useContext(CartContext)
+  const { getItemQuantity, increaseCartQuantity, cartItems, decreaseCartQuantity, removeFromCart } = useContext(CartContext)
   return (
     <View style={styles.container}>
       {data.map((item) => {
@@ -38,9 +38,19 @@ const ProductsList = ({ data }) =>{
                   </View>
                   <View style={styles.column}>
                     {quantity=== 0 ?(
+                      cartItems.length < 3 ? 
+                      (
                       <TouchableOpacity style={styles.btn} onPress={() => increaseCartQuantity(item.id)}>
                         <Text style={styles.btnText}>+ Añadir al Carrito</Text>
                       </TouchableOpacity>
+                      )
+                    :
+                    (
+                    <TouchableOpacity disabled={true} style={[styles.btn, {opacity: 0.6}]} onPress={() => increaseCartQuantity(item.id)}>
+                      <Text style={styles.btnText}>+ Añadir al Carrito</Text>
+                    </TouchableOpacity>
+                    )
+                      
                     ): (
                       <View style={styles.cartView}>
                         <View style={styles.row}>
@@ -48,9 +58,10 @@ const ProductsList = ({ data }) =>{
                             <Feather name='minus' color="#000" size={25} />
                           </TouchableOpacity>
                           <Text style={styles.textPrice}>{quantity} en el carrito</Text>
+                          {quantity <10 && 
                           <TouchableOpacity style={styles.btnInc} onPress={() => increaseCartQuantity(item.id)}>
                             <Feather name='plus' color="#000" size={25} />
-                          </TouchableOpacity>
+                          </TouchableOpacity>}
                         </View>
 
                         <TouchableOpacity style={styles.btnDelete} onPress={() => removeFromCart(item.id)}>

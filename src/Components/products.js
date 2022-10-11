@@ -29,7 +29,6 @@ const Products = ({navigation}) => {
   useEffect(() => {
     setIsLoading(true)
     axiosInstance.get('api/getAll/').then((result) => {
-      console.log(result.data)
       setData(result.data)
       setIsLoading(false)
     });
@@ -68,9 +67,9 @@ const Products = ({navigation}) => {
                     <Feather name="chevron-left" color="#000" size={25} />
                   </TouchableOpacity>
                   <Text style={style.title}>Productos</Text>
-                  <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                  {/* <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                     <Feather name="search" color="#000" size={25} /> 
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
                   {data ? <ProductsList key={data.id} data={data} /> : <Loading /> }
               </View>
@@ -84,13 +83,14 @@ const style = StyleSheet.create({
   header:{
     flexDirection:"row",
     alignItems:"center",
-    justifyContent:"space-between",
+    justifyContent:"flex-start",
     width:"100%",
     paddingHorizontal:20,
     paddingTop:15,
   },
   title: {
     fontSize: 25,
+    marginLeft: '30%',
     fontWeight: 'bold',
     // marginBottom: '10%',
     color: 'black',

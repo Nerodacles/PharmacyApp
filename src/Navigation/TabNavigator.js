@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, SettingsScreen, ProfileScreen, CartScreen } from '../Screens';
+import { HomeScreen, SettingsScreen, ProfileScreen, CartScreen, Search } from '../Screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CartContext } from '../context/CartContext';
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -28,6 +28,11 @@ const TabNavigator = () => {
             <Tab.Screen name="Home2" component={AppStack} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
+                }
+            }} />
+            <Tab.Screen name="Search" component={Search} options={{
+                tabBarIcon: ({color, size}) => {
+                    return <Icon name="search" color={color} size={size} />
                 }
             }} />
             <Tab.Screen name="Cart" component={CartScreen} options={{
