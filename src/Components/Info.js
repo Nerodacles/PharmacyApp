@@ -22,7 +22,7 @@ function Info ({ route }) {
   const [tags, setTags] = useState([])
   const [data, setData] = useState([]);
   const { id } = route.params;
-  console.log(id)
+  
  
   const {getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, cartQuantity} = useContext(CartContext)
   const quantity = getItemQuantity(id)
@@ -40,8 +40,12 @@ function Info ({ route }) {
  
 
   useEffect(() => {
+    console.clear()
+    setIsLoading(true)
+    setDetalles([])
+    setFavorite([])
+    setTags([])
     axiosInstance.get(`api/getOne/${id}`).then((response) => {
-      setIsLoading(true)
       setDetalles(response.data.data)
       setFavorite(response.data.favorite)
       setTags(response.data.data.tags)

@@ -2,7 +2,7 @@
   package="com.pharmacyapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -12,6 +12,9 @@
       android:roundIcon="@mipmap/ic_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBWGQdYMqTk_qslz7e6sQCI7rcBLJ2_l3U"/>
+      
+      
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

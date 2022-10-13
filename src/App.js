@@ -16,6 +16,7 @@ import { AuthProvider } from './context/AuthContext';
 import { AppNavigator } from './Navigation';
 import { CartProvider } from './context/CartContext';
 
+
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
 }
@@ -23,6 +24,7 @@ if (__DEV__) {
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const App = () => {
+  
   return (
     <AuthProvider>
       <CartProvider>

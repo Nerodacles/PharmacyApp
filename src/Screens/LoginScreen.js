@@ -132,36 +132,7 @@ const LoginScreen = ({navigation}) => {
                         
                         <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
                         
-                        <View style={{justifyContent: 'center', flexDirection: 'row', width: '100%', marginBottom: '20%'}}>
-                            <Text style={{
-                                width: '30%',
-                                backgroundColor: '#3b5998',
-                                height: 30,
-                                borderRadius: 50,
-                                padding: 5,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                margin: 5,
-                                textAlign: 'center',
-                                color: 'white'
-                            }}>
-                                Facebook
-                            </Text>
-                            <Text style={{
-                                width: '30%',
-                                backgroundColor: '#EA4335',
-                                height: 30,
-                                borderRadius: 50,
-                                padding: 5,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                margin: 5,
-                                textAlign: 'center',
-                                color: 'white'
-                            }}>
-                                Google
-                            </Text>
-                        </View>
+                    
 
                         <TouchableOpacity style={styles.button} onPress={isLogin ? () => {login(username, password)} : onSubmit}>
                             <Text style={styles.buttonText}>{isLogin ? 'Iniciar Sesión' : 'Registrarte'}</Text>

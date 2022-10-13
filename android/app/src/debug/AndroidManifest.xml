@@ -8,6 +8,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBWGQdYMqTk_qslz7e6sQCI7rcBLJ2_l3U"/>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false" />
+
     </application>
 </manifest>
