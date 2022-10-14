@@ -69,11 +69,6 @@ const TabNavigator = (props) => {
                     }, tabBarBadge: (cartQuantity === 0) ?  null : cartQuantity
                 }} />
             : null}
-            {/* <Tab.Screen name="Settings" component={SettingsScreen} options={{
-                tabBarIcon: ({color, size}) => {
-                    return <Icon name="settings-outline" color={color} size={size} />
-                }
-            }}/> */}
             <Tab.Screen name="Perfil" component={ProfileScreen}  options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="person-circle-outline" color={color} size={size} />;

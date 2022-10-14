@@ -16,8 +16,8 @@ const MapScreen = ({route}) => {
     const [ location, setLocation ] = useState(null);
     const { order } = route.params
     const [ region, setRegion ] = useState({
-        latitude: order?.location[0].latitude,
-        longitude: order?.location[0].longitude,
+        latitude: order?.location[0]?.latitude,
+        longitude: order?.location[0]?.longitude,
         latitudeDelta:  0.1,
         longitudeDelta: 0.1,
     })

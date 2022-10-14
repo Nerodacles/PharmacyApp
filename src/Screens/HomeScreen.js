@@ -121,41 +121,23 @@ const HomeScreen = ({navigation}) => {
                 </View>
             </View>
             
-            <View style={{margin: 20}}>
-                <TouchableOpacity onPress={() => navigation.navigate('Products')} 
-                    style={{
-                    padding:10,
-                    borderRadius: 20,
-                    margin:20,
-                    backgroundColor: "#4cc3eb",
-                    alignItems: "center"
-                    }} 
-                    >
-                    <Text style={{fontSize:20}}>Ir a los Productos</Text>
-                </TouchableOpacity>
-                
-
-            {/* <View style={styles.container}>
-                <MapView 
-                // showsCompass={true}
-                // provider={PROVIDER_GOOGLE}
-                // mapType={Platform.OS == "android" ? "none" : "standard"}
-                  initialRegion={{
-                    latitude: 37.378825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                  }}
-                style={styles.map} >
-                    <Marker
-                        coordinate={{ latitude : 19.3244234 , longitude : 29.324324 }}
-                    />
-                </MapView> */}
-
-            {/* </View> */}
-            </View>
+            {userInfo.role === 'delivery' ? null :
+                <View style={{margin: 20}}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Products')} 
+                        style={{
+                        padding:10,
+                        borderRadius: 20,
+                        margin:20,
+                        backgroundColor: "#4cc3eb",
+                        alignItems: "center"
+                        }} 
+                        >
+                        <Text style={{fontSize:20}}>Ir a los Productos</Text>
+                    </TouchableOpacity>
+                </View>
+            }
         </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
