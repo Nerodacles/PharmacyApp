@@ -3,27 +3,41 @@ import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable} from 'r
 import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = ({ navigation }) =>{
-    const {logout} = useContext(AuthContext);
-    const {userInfo} = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
+    const { userInfo } = useContext(AuthContext);
+
+    function isDelivery() {
+        const {userInfo} = useContext(AuthContext);
+        if (userInfo.role == 'delivery'){
+            return true
+        }
+        return false
+    }
+    isDelivery()
+
     return(
         <View style={style.container}>
             <Text style={style.title}>Perfil</Text>
             <View style={style.cont}>
                 <View style={style.cont2}>
-                    <View style={style.options}>
-                        <Pressable onPress={() => navigation.navigate('Favorito')} style={{width: '100%'}}>
-                            <Text style={style.subtitle}>
-                                Favoritos
-                            </Text>
-                        </Pressable>
-                    </View>
-                    <View style={style.options}>
-                        <Pressable onPress={() => navigation.navigate('Ordenes Pasadas')} style={{width: '100%'}}>
-                            <Text style={style.subtitle}>
-                                Ordenes Pasadas
-                            </Text>
-                        </Pressable>
-                    </View>
+                    {isDelivery() ? null :
+                        <View style={style.options}>
+                            <Pressable onPress={() => navigation.navigate('Favorito')} style={{width: '100%'}}>
+                                <Text style={style.subtitle}>
+                                    Favoritos
+                                </Text>
+                            </Pressable>
+                        </View>
+                    }
+                    {isDelivery() ? null :
+                        <View style={style.options}>
+                            <Pressable onPress={() => navigation.navigate('Ordenes Pasadas')} style={{width: '100%'}}>
+                                <Text style={style.subtitle}>
+                                    Ordenes Pasadas
+                                </Text>
+                            </Pressable>
+                        </View>
+                    }
                     <View style={style.options}>
                         <Text style={style.subtitle}>
                             Nombre de Usuario:

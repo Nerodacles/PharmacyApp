@@ -10,12 +10,13 @@ import 'react-native-gesture-handler'
 import React from 'react';
 import './Translations';
 import axios from 'axios';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, LogBox } from 'react-native';
 
 import { AuthProvider } from './context/AuthContext';
 import { AppNavigator } from './Navigation';
 import { CartProvider } from './context/CartContext';
 
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));

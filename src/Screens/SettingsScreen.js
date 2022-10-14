@@ -19,27 +19,23 @@ const SettingsScreen = () => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={() => { setModalVisible(!modalVisible) }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Juanma MMG</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+            <Text style={styles.modalText}>Desea aceptar la orden?</Text>
+            <View style={styles.contenedor}>
+              <Pressable style={[styles.button, styles.buttonOpen]}>
+                <Text style={styles.textStyle}>Aceptar</Text>
+              </Pressable>
+              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Cancelar</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
+      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)} >
         <Text style={styles.textStyle}>Show Modal</Text>
       </Pressable>
     </View>
@@ -49,7 +45,7 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#000',
   },
   heading: {
     fontSize: 30,
@@ -67,29 +63,36 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
+    backgroundColor:"white",
+    borderRadius: 60,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "black",
     shadowOffset: {
       width: 0,
       height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 10,
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+    borderRadius: 40,
+    padding: 20,
+    margin: 10,
+    elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#4cc3eb",
+    fontSize: 50,
+    lineHeight: 21,
+    letterSpacing: 0.25,
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#E2443B",
+    fontSize: 50,
+    lineHeight: 21,
+    letterSpacing: 0.25,
   },
   textStyle: {
     color: "white",
@@ -100,6 +103,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     color: 'black'
+  },
+  contenedor: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   }
 });
 

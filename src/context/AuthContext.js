@@ -1,4 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react';
+import { Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -8,7 +9,6 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState('');
   const [userInfo, setUserInfo] = useState('');
@@ -23,29 +23,22 @@ export const AuthProvider = ({children}) => {
         .then(res => {
           let userInfo = res.data;
           if (userInfo.token !== null || userInfo.token !== undefined){
+            if (!userInfo.status){
+              setIsLoading(false);
+              alert('Usuario no activo.\nContacte al administrador');
+              return
+            }
             setUserInfo(userInfo);
             setUserToken(userInfo.token)
-  
+
             AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
             AsyncStorage.setItem('userToken', userInfo.token)
             setIsLoading(false)
-          }else{
+          } else{
             AsyncStorage.removeItem('userInfo')
             AsyncStorage.removeItem('userToken')
           }
-          
         })
-        // if (res.status === 200){
-        //   
-
-        //   AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-        //   AsyncStorage.setItem('userToken', userInfo.token)
-        //   // onLoggedIn(res.data)
-        //   setIsLoading(false);
-        //   setUsername('');
-        //   setPassword('');
-        //   setEmail('');
-        
     
     } catch (error){
         console.log(error)

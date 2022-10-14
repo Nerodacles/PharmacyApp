@@ -1,43 +1,16 @@
-// In App.js in a new project
-
 import React, { useState, useEffect, useContext} from 'react';
-import { View, Text, Button, StatusBar, Image, TextInput, StyleSheet, FlatList, TouchableOpacity, Platform, Alert, Pressable } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable, Modal} from 'react-native';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import Feather from 'react-native-vector-icons/Feather'
-
-import Icon from 'react-native-vector-icons/Ionicons'
+import { Button } from 'react-native-paper';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-const Order = ({ route }) => {
-  const {userToken}= useContext(AuthContext);
-  // const navigation = useNavigation();
-  const [isChanged, setIsChanged] = useState(true);
-  const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
-  const { id } = route.params;
-
-
-const [producto, setProductos] = useState([]);
-
-  const onChangeSearchbyName = (name) => {
-    setName(name);
-  }
-
-  const onChangeSearchbyTags = (tags) => {
-    setTags('')
-    setTags(oldArray => [...oldArray, tags])
-  }
-
-
-  const onChange = () => {
-    setIsChanged(!isChanged);
-    setProductos([])
-    setName('')
-  }
+const OrdersScreen = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState({});
+  const { userToken } = useContext(AuthContext);
 
   axiosInstance.interceptors.request.use(
     config => {
@@ -49,186 +22,129 @@ const [producto, setProductos] = useState([]);
     }
   )
 
-  
-  
-    const onSearchbyName = async() =>{
-        setProductos([])
-        const response = await axiosInstance.post(`search`, {
-            name: name
-        })
-        setProductos(response.data)
-      }
+  useEffect(() => {
+    axiosInstance.get('orders').then((res) => {
+      setOrders(res.data);
+    });
+  }, []);
 
-      const onSearchbyTags = async() =>{
-        setProductos([])
-        var tagArr = tags.toString().split(',')
-        var tagTrim = tagArr.map(trim => trim.trim())
-        const response = await axiosInstance.post(`search/tags`, {
-            tags: tagTrim
-        })
-        console.log(tagTrim)
-        setProductos(response.data)
-        
-      }
-    
+  function acceptOrder(order) {
+    setModalVisible(true)
+    setOrder(order)
+  }
+
+  function accept() {
+    navigation.navigate('MapScreen', {order: order})
+    setModalVisible(false)
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backbtn}>
-          <Feather name="chevron-left" color="#000" size={25} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Pedido: {id}</Text>
-      </View>
-
-      <View style={styles.cont3}>
-          <TextInput 
-              value={isChanged ? name : tags } 
-              style={styles.input} 
-              placeholderTextColor="#9c9c9c" 
-              placeholder={isChanged ? 'Escribe el nombre del Producto' : 'Escribe un Síntoma'} 
-              onChangeText={isChanged ?  onChangeSearchbyName : onChangeSearchbyTags }>
-          </TextInput>
-
-          <TouchableOpacity onPress={isChanged ? onSearchbyName : onSearchbyTags} style={styles.searchbtn}>
-              <Icon name='search' size={25} color={'#4cc3eb'} />
+    <View style={styles.maincontainer}>
+      {orders.map((order) => (
+        <View style={styles.container} key={order.id}>
+          <TouchableOpacity onPress={() => acceptOrder(order)}>
+            <Text style={styles.peroquemielda}>Orden #{order.id}</Text>
+            <Text style={styles.peroquemielda}>Estado: {order.status ? 'Activo' : 'Una mielda'}</Text>
+            <Text style={styles.peroquemielda}>Fecha: {order.createdTime.split("T")[0]}</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity onPress={onChange} style={styles.btn}>
-              <Text style={styles.btnText}>{isChanged ? 'Por Síntoma' : 'Por Nombre'}</Text>
-          </TouchableOpacity>
-      </View>
-
-      <FlatList 
-        data={producto}
-        numColumns={1}
-        style={styles.cont}
-        renderItem={({item: item}) => 
-          <Pressable 
-            onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed
-                  ? 'rgb(210, 230, 255)'
-                  : 'white'
-              }, styles.cont2]}>
-            <View style={styles.cover}>
-              <Image source={{uri: `https://${item.cover}`}} style={styles.image} />
+        </View>
+      ))}
+      <View style={styles.container}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Desea aceptar la orden?</Text>
+              <View style={styles.contenedor}>
+                <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(), setModalVisible(!modalVisible))}>
+                  <Text style={styles.textStyle}>Aceptar</Text>
+                </Pressable>
+                <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </Pressable>
+              </View>
             </View>
-            <Text style={styles.text}>{item.name} </Text>
-          </Pressable>} />
+          </View>
+      </Modal>
+      </View>
     </View>
   ) 
 }
 
 const styles = StyleSheet.create({
+  maincontainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  peroquemielda: {
+    color: 'black',
+  },
+  heading: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: '5%',
+    marginBottom: '30%',
+    color: 'black',
+    textAlign: 'center'
+  },
+  centeredView: {
     flex: 1,
-    backgroundColor: '#FFF',
     justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
-  header:{
-    flexDirection:"row",
-    alignItems:"center",
-    width:"100%",
-    paddingHorizontal:20,
-    paddingTop:15,
-  },
-  backbtn: {
-    width:'5%',
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: '10%',
-    // marginBottom: '10%',
-    color: 'black',
-    textAlign: 'center',
-    alignItems: 'center'
-  },
-  title: {
-    width:'90%',
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: '10%',
-    marginLeft: -5,
-    // marginBottom: '10%',
-    color: 'black',
-    textAlign: 'center',
-    alignItems: 'center'
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '400',
-    // width:'60%',
-    color: 'black',
-    textAlignVertical: 'center',
-    marginLeft: 15,
-  },
-  cover:{
-    height:70,
-    width:70,
-    margin: 5,
-  },
-  image:{
-    width: "100%",
-    height:"100%",
-    resizeMode: "cover"
-  },
-  cont: {
-    flex: 1,
-    borderRadius: 5,
-    margin: 5,
-  },
-  cont2: {
-    flexDirection: "row",
-    borderRadius: 5,
-    padding: 4,
-    margin: 5,
-    shadowColor: "#000",
+  modalView: {
+    margin: 20,
+    backgroundColor:"white",
+    borderRadius: 60,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "black",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2
     },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 10,
   },
-  cont3: {
-    flexDirection: "row",
-    borderRadius: 8,
-    paddingVertical:5,
+  button: {
+    borderRadius: 40,
+    padding: 20,
     margin: 10,
-    alignItems:"center",
-    width: '100%',
-    justifyContent: 'center'
+    elevation: 2,
   },
-  btn:{
+  buttonOpen: {
     backgroundColor: "#4cc3eb",
-    paddingHorizontal:10,
-    paddingVertical:5,
-    borderRadius:30,
-    width: '20%'
+    fontSize: 50,
+    lineHeight: 21,
+    letterSpacing: 0.25,
   },
-  searchbtn:{
-    paddingHorizontal:10,
-    paddingVertical:5,
-    borderRadius:30,
-    width: '10%'
+  buttonClose: {
+    backgroundColor: "#E2443B",
+    fontSize: 50,
+    lineHeight: 21,
+    letterSpacing: 0.25,
   },
-  btnText:{
-    fontSize:15,
-    color:"#FFF"
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
   },
-  input: {
-    width: '60%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    paddingTop: 10,
-    marginLeft: '-5%',
-    fontSize: 16, 
-    minHeight: 40,
-    color: 'black',
-    },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: 'black'
+  },
+  contenedor: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });
 
-export default Order;
+export default OrdersScreen;
