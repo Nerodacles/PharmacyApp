@@ -64,7 +64,6 @@ const ShoppingCart = ({ route }) => {
               </TouchableOpacity>
             </View>
           </View>
-
         </View>
       )
     }
@@ -100,14 +99,14 @@ const ShoppingCart = ({ route }) => {
             <Text style={styles.totalText}>
               Total: RD${cartItems.reduce((total, cartItem) => {
                 const item = itemInCart.find(item => item.id === cartItem.id)
-                console.log('prueba:' + cartItems.length)
+                // console.log('prueba:' + cartItems.length)
                 return (total + (item?.price || 0) * cartItem.quantity)
               }, 0)}
             </Text>
          </View>
         
       </View>)}
-          <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('PaymentMet')}>
+          <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
             <Text style={styles.ComprarbtnText}>
               Comprar
             </Text>

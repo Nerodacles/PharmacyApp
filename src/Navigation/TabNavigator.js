@@ -9,7 +9,8 @@ import AppStack from './AppStack';
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const TabNavigator = (props) => {
+    const hide = props.routeName 
     const {cartQuantity } = useContext(CartContext)
     return(
         <Tab.Navigator initialRouteName='Home2' screenOptions={{
@@ -28,7 +29,8 @@ const TabNavigator = () => {
             <Tab.Screen name="Home2" component={AppStack} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
-                }
+                },
+                tabBarStyle:{ display: hide == 'Info' || hide == 'PaymentMet' ? "none" : "flex"}
             }} />
             <Tab.Screen name="Search" component={Search} options={{
                 tabBarIcon: ({color, size}) => {
@@ -40,11 +42,11 @@ const TabNavigator = () => {
                     return <Icon name="cart" color={color} size={size} />
                 }, tabBarBadge: (cartQuantity === 0) ?  null : cartQuantity
             }} />
-            {/* <Tab.Screen name="Settings" component={SettingsScreen} options={{
+            <Tab.Screen name="Settings" component={SettingsScreen} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="settings-outline" color={color} size={size} />
                 }
-            }}/> */}
+            }}/>
             <Tab.Screen name="Profile" component={ProfileScreen}  options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="person-circle-outline" color={color} size={size} />;

@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useState, useRef } from 'react';
-import { View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Modal, Pressable, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -11,13 +11,37 @@ import Icon from 'react-native-vector-icons/Ionicons'
 // const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const SettingsScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor= '#FFF' barStyle='dark-content'/>
-      <Text style={styles.heading}>Settings</Text>
-      <View style={styles.form}>
-        <Text style={{color: 'black'}}>{<Icon name='home-outline'/>} </Text>
-      </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Juanma MMG</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
     </View>
   ) 
 }
@@ -35,60 +59,48 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center'
   },
-  form: {
+  centeredView: {
     flex: 1,
-    justifyContent: 'space-between',
-    paddingBottom: '5%',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
-  inputs: {
-    width: '100%',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: '10%',
-  },  
-  input: {
-    width: '90%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    paddingTop: 10,
-    fontSize: 16, 
-    minHeight: 40,
-    color: 'black',
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
   button: {
-    width: '80%',
-    backgroundColor: 'black',
-    height: 40,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '400'
+  buttonOpen: {
+    backgroundColor: "#F194FF",
   },
-  buttonAlt: {
-    width: '80%',
-    borderWidth: 1,
-    height: 40,
-    borderRadius: 50,
-    borderColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
+  buttonClose: {
+    backgroundColor: "#2196F3",
   },
-  buttonAltText: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: '400',
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
   },
-  message: {
-    fontSize: 16,
-    marginVertical: '5%',
-  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: 'black'
+  }
 });
 
 export default SettingsScreen;
