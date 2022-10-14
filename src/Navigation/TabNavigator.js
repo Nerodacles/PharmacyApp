@@ -9,9 +9,10 @@ import { AuthContext } from '../context/AuthContext'
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
-    const { cartQuantity } = useContext(CartContext)
-
+const TabNavigator = (props) => {
+    const hide = props.routeName 
+    const {cartQuantity } = useContext(CartContext)
+    
     function isDelivery() {
         const {userInfo} = useContext(AuthContext);
         if (userInfo.role == 'delivery'){
@@ -38,7 +39,8 @@ const TabNavigator = () => {
             <Tab.Screen name="Home2" component={AppStack} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
-                }
+                },
+                tabBarStyle:{ display: hide == 'Info' || hide == 'PaymentMet' ? "none" : "flex"}
             }} />
             {isDelivery() ? null : 
             <Tab.Screen name="Busqueda" component={Search} options={{

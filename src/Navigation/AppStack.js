@@ -22,7 +22,8 @@ const AppStack = () => {
             <Stack.Screen name="Search" component={Search} />
             <Stack.Screen name="Order" component={Order} />
             <Stack.Screen name="Cart" component={ShoppingCart} />
-            <Stack.Screen name="PaymentMet" component={PaymentMethod} />
+            <Stack.Screen name="UserLocation" component={UserLocation} />
+            <Stack.Screen name="ConfirmLocation" component={ConfirmLocation} />
         </Stack.Navigator>
     )
 }

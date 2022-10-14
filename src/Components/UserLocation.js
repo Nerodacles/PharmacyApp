@@ -16,7 +16,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-m
 import Icon  from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather'
 
-export default function PaymentMethod({navigation}) {
+export default function UserLocation({navigation}) {
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState({
     latitude: location ? location?.coords?.latitude : 18.947729907033047, 
@@ -73,15 +73,9 @@ export default function PaymentMethod({navigation}) {
       onRegionChange({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
-        latitudeDelta:  0.0001,
-        longitudeDelta: 0.0001,
+        latitudeDelta:  0.00001,
+        longitudeDelta: 0.00001,
       })
-      // position.MapView.AnimatedRegion({
-      //   latitude: position.coords.latitude,
-      //   longitude: position.coords.longitude,
-      //   latitudeDelta:  1,
-      //   longitudeDelta: 1,
-      // })
       console.log(position.coords);
     },
     error => {
@@ -108,14 +102,18 @@ export default function PaymentMethod({navigation}) {
   function onRegionChange(region) {
     setRegion(region)
   }
+
+  useEffect(() =>{
+    getLocation()
+  }, [])
   
   return(
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
           <Feather name="chevron-left" color="#000" size={25} />
         </TouchableOpacity>
-        <Text style={styles.title}>Productos</Text>
+        <Text style={styles.title}>Seleccione su ubicación</Text>
       </View>
       <View style={styles.MapContainer}>
         <MapView
@@ -139,7 +137,6 @@ export default function PaymentMethod({navigation}) {
                 color='#000'
                 
               />
-              {/* <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/> */}
             </Marker>
             {location && <Marker
               pinColor={'navy'}
@@ -149,10 +146,15 @@ export default function PaymentMethod({navigation}) {
               <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/>
             </Marker>}
           </MapView>
+        <View style={{ alignItems:'center', flex: 1, justifyContent: 'flex-end', width: "100%", height: "98%", margin: 10, position: 'absolute'}}>
+          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#4cc3eb'}]} onPress={getLocation}>
+            <Text style={styles.Text}>Ir a tu Ubicación</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#198754'}]} onPress={() => navigation.navigate('ConfirmLocation')}>
+            <Text style={styles.Text}>Confirmar Ubicación</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity style={styles.buttons} onPress={getLocation}>
-        <Text style={styles.Text}>Get Location</Text>
-      </TouchableOpacity>
     </View> 
   );
 }
@@ -162,19 +164,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     color: '#000',
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
+    // width: '100%',
+    // height: '100%',
   },
   contentContainer: {
     padding: 12,
-  },
-  result: {
-    borderWidth: 1,
-    borderColor: '#666',
-    width: '100%',
-    padding: 10,
-    backgroundColor: 'red'
   },
   Text: {
     color: 'black',
@@ -186,20 +180,21 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   MapContainer:{
-    width: '90%',
-    height: '70%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 2,
+    width: '100%',
+    height: '80%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     
   },
   buttonContainer: {
     alignItems: 'center',
   },
   buttons: {
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#423423',
     borderRadius: 15,
+    // position: 'relative',
     margin: 12,
     width: '50%',
     height: '5%',
@@ -212,12 +207,17 @@ const styles = StyleSheet.create({
     width:"100%",
     paddingHorizontal:20,
     paddingTop:15,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    marginBottom: '2%',
   },
   title: {
     fontSize: 25,
-    marginLeft: '30%',
+    marginLeft: '12%',
     fontWeight: 'bold',
-    marginBottom: '10%',
+    // marginBottom: '10%',
     color: 'black',
     textAlign: 'center'
   },
