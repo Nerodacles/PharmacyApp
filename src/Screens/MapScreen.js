@@ -42,7 +42,6 @@ const MapScreen = ({route}) => {
     useEffect(() => {
       axiosInstance.get(`orders/delivery/${userInfo.id}`).then((res) => {
         setOrder(res.data);
-        // console.log(res.data.location)
       });
     }, []);
 
@@ -92,15 +91,14 @@ const MapScreen = ({route}) => {
           showLocationDialog: true,
         })
     }
+    
     function onRegionChange(region) {
       setRegion(region)
-      // wait(10000).then(() => { getLocation() })
-      console.log(location)
     }
     
-
     useEffect(() => {
-      // getLocation();
+      getLocation();
+      wait(10000).then(() => { getLocation() })
     }, [])
 
     return(
@@ -120,14 +118,14 @@ const MapScreen = ({route}) => {
                 minZoomLevel={15}
                 region={region}
                 showsScale={true}
-                // onRegionChange={onRegionChange}
+                onRegionChange={onRegionChange}
                 style={styles.map}>
                 <Marker pinColor={'navy'} title={"Farmacia"} coordinate={{ latitude : 18.9478715 , longitude : -70.4059083 }} >
                     <Icon size={35} name="prescription-bottle" color='#000' />
                 </Marker>
-                {/* {location && <Marker pinColor={'navy'} title={"Delivery"} coordinate={location}>
+                {location && <Marker pinColor={'navy'} title={"Delivery"} coordinate={location}>
                     <Iconos size={35} name="moped" color='#000' />
-                </Marker>} */}
+                </Marker>}
                 {order.map(markers => {
                   if (markers.delivered === 'on the way'){
                     return (<Marker key={markers.id} onPress={() =>  setModalVisible(true)} coordinate={{ latitude: Number(markers.location.latitude), longitude: Number(markers.location.longitude) }} title={markers.user} >
@@ -150,7 +148,6 @@ const MapScreen = ({route}) => {
                           </View>
                       </Modal>
                     </View>
-                    {console.log(markers.location)}
                     </Marker>)
                     } else{
                       return null
