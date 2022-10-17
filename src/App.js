@@ -17,6 +17,7 @@ import { AppNavigator } from './Navigation';
 import { CartProvider } from './context/CartContext';
 
 LogBox.ignoreLogs(['new NativeEventEmitter']);
+LogBox.ignoreLogs(['ViewPropTypes']);
 
 if (__DEV__) {
   import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));

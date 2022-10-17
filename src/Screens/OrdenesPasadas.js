@@ -66,6 +66,7 @@ const OrdenesPasadas = ({ navigation }) => {
             <Text style={styles.text}> Se entregó: {item?.delivered ? 'Si' : 'No'} </Text>
             <Text style={styles.text}> Fármacos: </Text>
             { item.drugs.map((drug, index) => { return <Text style={styles.text} key={index}> {drug.name} </Text> })}
+            <Text style={styles.text}> Detalles: {item.moreDetails.direction}, {item.moreDetails.street} </Text>
           </Pressable>} />
     </View>
   ) 

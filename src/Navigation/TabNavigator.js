@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CartContext } from '../context/CartContext';
 import Icon from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
-import AppStack from './AppStack';
+import UserStack from './UserStack';
 import { AuthContext } from '../context/AuthContext'
 
 const Tab = createBottomTabNavigator();
@@ -23,7 +23,7 @@ const TabNavigator = (props) => {
     isDelivery()
 
     return(
-        <Tab.Navigator initialRouteName='Home2' screenOptions={{
+        <Tab.Navigator initialRouteName='Home' screenOptions={{
             tabBarShowLabel:true,
             headerShown: false,
             tabBarActiveTintColor:'#0062da',
@@ -36,11 +36,11 @@ const TabNavigator = (props) => {
 
             }
                 }}>
-            <Tab.Screen name="Home2" component={AppStack} options={{
+            <Tab.Screen name="Home" component={UserStack} options={{
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
                 },
-                tabBarStyle:{ display: hide == 'Info' || hide == 'PaymentMet' ? "none" : "flex"}
+                tabBarStyle:{ display: hide == 'Info' || hide == 'UserLocation' || hide == 'ConfirmLocation' ? "none" : "flex"}
             }} />
             {isDelivery() ? null : 
             <Tab.Screen name="Busqueda" component={Search} options={{

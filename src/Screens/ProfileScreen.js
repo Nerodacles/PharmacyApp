@@ -62,6 +62,15 @@ const ProfileScreen = ({ navigation }) =>{
                             {userInfo ? userInfo.role: 'RandomUser'}
                         </Text>
                     </View>
+                    {isDelivery() ? null :
+                        <View style={style.options}>
+                            <Pressable onPress={() => navigation.navigate('ChangePassword')} style={{width: '100%'}}>
+                                <Text style={style.subtitle}>
+                                    Cambiar Contraseña
+                                </Text>
+                            </Pressable>
+                        </View>
+                    }
                 </View>
                 <View style={style.cont3}>
                     <TouchableOpacity style={style.btn} onPress={() => {logout()}}>

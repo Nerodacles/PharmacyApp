@@ -31,10 +31,12 @@ const OrdersScreen = ({navigation}) => {
   function acceptOrder(order) {
     setModalVisible(true)
     setOrder(order)
+    console.log(order)
   }
 
-  function accept() {
-    navigation.navigate('MapScreen', {order: order})
+  function accept(id) {
+    axiosInstance.post(`orders/accept/${id}`, {id: id})
+    // navigation.navigate('MapScreen', {order: order})
     setModalVisible(false)
   }
 
@@ -43,19 +45,22 @@ const OrdersScreen = ({navigation}) => {
       {orders.map((order) => (
         <View style={styles.container} key={order.id}>
           <TouchableOpacity onPress={() => acceptOrder(order)}>
-            <Text style={styles.peroquemielda}>Orden #{order.id}</Text>
-            <Text style={styles.peroquemielda}>Estado: {order.status ? 'Activo' : 'Una mielda'}</Text>
-            <Text style={styles.peroquemielda}>Fecha: {order.createdTime.split("T")[0]}</Text>
+            <Text style={styles.text}>Orden #{order.id}</Text>
+            <Text style={styles.text}>Drugs</Text>
+            { order.drugs.map((drug, index) => { return <Text style={[styles.text, {fontWeight: 'bold'}]} key={index}> {drug.name} </Text> })}
+            <Text style={styles.text}>Estado: {order.status ? 'Activo' : 'Pendiente'}</Text>
+            <Text style={styles.text}>Fecha: {order.createdTime.split("T")[0]}</Text>
           </TouchableOpacity>
         </View>
       ))}
+
       <View style={styles.container}>
       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Desea aceptar la orden?</Text>
               <View style={styles.contenedor}>
-                <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(), setModalVisible(!modalVisible))}>
+                <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(order.id), setModalVisible(!modalVisible))}>
                   <Text style={styles.textStyle}>Aceptar</Text>
                 </Pressable>
                 <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  peroquemielda: {
+  text: {
     color: 'black',
   },
   heading: {

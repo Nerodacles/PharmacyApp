@@ -39,7 +39,6 @@ export const AuthProvider = ({children}) => {
             AsyncStorage.removeItem('userToken')
           }
         })
-    
     } catch (error){
         console.log(error)
         alert("Un error ha ocurrido");

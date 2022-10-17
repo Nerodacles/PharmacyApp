@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,82 +11,101 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 import Feather from 'react-native-vector-icons/Feather';
 
-const ConfirmLocation = ({route}) => {
-  const [direccion, setDireccion] = useState('');
-  const navigation = useNavigation()
-  const [calle, setCalle] = useState('');
-  const [numero, setNumero] = useState('');
-  const [referencia, setReferencia] = useState('');
-  const { latitude, longitude } = route.params
+const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
-  const onChangeDireccion = direccion => {
-    setDireccion(direccion);
+
+const ChangePassword = ({navigation}) => {
+    const [oldPasswd, setOldPasswd] = useState('');
+    const [newPasswd, setNewPasswd] = useState('');
+    const [confPasswd, setConfPasswd] = useState('');
+    const {userToken}= useContext(AuthContext);
+    
+    axiosInstance.interceptors.request.use(
+        config => {
+          config.headers['authorization'] = userToken
+          return config
+        },
+        error => {
+          return Promise.reject(error)
+        }
+      )
+
+  const onChangeOldPasswd = oldPasswd => {
+    setOldPasswd(oldPasswd);
   };
 
-  const onChangeCalle = calle => {
-    setCalle(calle);
+  const onChangeNewPasswd = newPasswd => {
+    setNewPasswd(newPasswd);
   };
 
-  const onChangeNumero = numero => {
-    setNumero(numero);
+  const onChangeConfPasswd = confPasswd => {
+    setConfPasswd(confPasswd);
   };
 
-  const onChangeReferencia = referencia => {
-    setReferencia(referencia);
-  };
+  const changePasswd = async() => {
+    if (newPasswd === confPasswd && oldPasswd != newPasswd){
+        try{
+            const response = await axiosInstance.patch('/users/changePassword', {
+                oldPassword : oldPasswd,
+                newPassword : newPasswd
+            }) 
+            if (response.status === 200) {
+                navigation.navigate('Perfil')
+            }
+        } catch (error){
+            console.log(error)
+        }
+    } if (oldPasswd === newPasswd){
+            const error = new Error('No se puede poner la misma contraseña que la antigua');
+            error.statusCode = 500;
+            console.log(error)
+    }
+  }
+
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('UserLocation')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
           <Feather name="chevron-left" color="#000" size={25} />
         </TouchableOpacity>
-        <Text style={styles.title}>Confirme su Ubicación</Text>
+        <Text style={styles.title}>Cambiar contraseña</Text>
       </View>
       <View style={styles.container}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Dirección</Text>
+          <Text style={styles.text}>Contraseña anterior</Text>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeDireccion}
+            onChangeText={onChangeOldPasswd}
             placeholder="Barrio San Pablo, Edificio 4, Apartamento 3"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>
 
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Calle</Text>
+          <Text style={styles.text}>Nueva contraseña</Text>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeCalle}
+            onChangeText={onChangeNewPasswd}
             placeholder="Calle Duarte"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>
 
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Número de Casa/Apartamento</Text>
+          <Text style={styles.text}>Confirmar Contraseña</Text>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeNumero}
+            onChangeText={onChangeConfPasswd}
 			
             placeholder="No. 10"
-            placeholderTextColor={'#C0C0C0'}
-          />
-        </View>
-
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>Referencia</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeReferencia}
-            placeholder="Al lado de un colmado"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>
@@ -94,9 +113,14 @@ const ConfirmLocation = ({route}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-		  disabled={calle == '' || direccion == '' || numero == '' || referencia == '' ? true : false}
-          onPress={() => navigation.navigate('PaymentMethod', {latitude : latitude, longitude: longitude, direccion : direccion , calle : calle, numero: numero, referencia : referencia })}>
+		  disabled={oldPasswd == '' || newPasswd == '' || confPasswd == '' ? true : false}
+          onPress={() => changePasswd()}>
           <Text style={styles.buttonText}> Aceptar </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, {backgroundColor: '#E2443B'}]}
+          onPress={() => navigation.navigate('Perfil')}>
+          <Text style={styles.buttonText}> Cancelar </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -149,8 +173,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
+    flexDirection: 'row-reverse',
     alignItems: 'flex-end',
-    marginRight: 35,
+    marginRight: -30,
     marginVertical: 25,
   },
   input: {
@@ -163,9 +188,10 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   button: {
-    width: '50%',
+    width: '30%',
     backgroundColor: '#4cc3eb',
     height: 40,
+    marginRight: 2,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
@@ -197,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmLocation;
+export default ChangePassword;

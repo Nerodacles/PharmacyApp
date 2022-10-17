@@ -107,8 +107,9 @@ function Info ({ route }) {
           <Text style={style.title}>{detalles.name}</Text>
           <Text style={style.subtitle}>Descripción</Text>
           <Text style={style.description}> {detalles.description} </Text>
-          <Text style={[style.description, {opacity: 0.4, marginTop: '25%'}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
         </View>
+        <View style={style.bottomCont}>
+        <Text style={[style.description, {opacity: 0.4}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
         <View style={style.cont3}>
           <TouchableOpacity onPress={AddFav}>
             <FontAwesome name={favorite !== true ? "heart-o" : "heart"} color={favorite !== true ? "#000" : "#E2443B"} size={30} />
@@ -117,6 +118,7 @@ function Info ({ route }) {
           <TouchableOpacity style={style.btn} onPress={() => increaseCartQuantity(id)}>
             <Text style={style.btnText}>Comprar</Text>
           </TouchableOpacity>
+        </View>
         </View>
       </View>
 
@@ -196,9 +198,14 @@ cont3:{
   marginBottom:20,
   alignItems:"center",
   width:"100%",
-  height:"45%",
+  height:"35%",
   justifyContent:"space-between",
   marginTop:20,
+},
+bottomCont:{
+  flexDirection:"column",
+  justifyContent: 'flex-end',
+  height: '40%'
 },
 price: {
   fontSize: 20,

@@ -110,7 +110,7 @@ export default function UserLocation({navigation}) {
   return(
     <View style={styles.mainContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="chevron-left" color="#000" size={25} />
         </TouchableOpacity>
         <Text style={styles.title}>Seleccione su ubicación</Text>
@@ -141,6 +141,7 @@ export default function UserLocation({navigation}) {
             {location && <Marker
               pinColor={'navy'}
               title={"Cliente 1"}
+              onPress={() => console.log('hola mundo')}
               coordinate={{ latitude : location?.coords?.latitude , longitude : location?.coords?.longitude }}
             >
               <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/>
@@ -150,7 +151,7 @@ export default function UserLocation({navigation}) {
           <TouchableOpacity style={[styles.buttons, {backgroundColor: '#4cc3eb'}]} onPress={getLocation}>
             <Text style={styles.Text}>Ir a tu Ubicación</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#198754'}]} onPress={() => navigation.navigate('ConfirmLocation')}>
+          <TouchableOpacity style={[styles.buttons, {backgroundColor: '#198754'}]} onPress={() => navigation.navigate('ConfirmLocation', {latitude : location?.coords?.latitude , longitude : location?.coords?.longitude})}>
             <Text style={styles.Text}>Confirmar Ubicación</Text>
           </TouchableOpacity>
         </View>
@@ -215,9 +216,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    marginLeft: '12%',
+    marginLeft: '5%',
     fontWeight: 'bold',
-    // marginBottom: '10%',
     color: 'black',
     textAlign: 'center'
   },

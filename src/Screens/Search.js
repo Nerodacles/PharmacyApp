@@ -99,7 +99,10 @@ const Search = ({navigation}) => {
           axiosInstance.post(`search`, {name: name}).then(response =>{
             setProductos(response.data)
           }).catch(function (error) {
-            setErrorMessage(error)
+            console.log(error)
+            if (error == 'AxiosError: Request failed with status code 500'){
+              setErrorMessage('No se encontraron productos')
+            }
           })
         }
         }
@@ -117,7 +120,10 @@ const Search = ({navigation}) => {
           axiosInstance.post(`search/tags`, {tags : value}).then(response => {
             setProductos(response.data)
           }).catch(function (error) {
-            setErrorMessage(error)
+            console.log(error.status)
+            if (error == 'AxiosError: Request failed with status code 500'){
+              setErrorMessage('No se encontraron productos')
+            }
           })
         }
       }
@@ -206,7 +212,7 @@ const Search = ({navigation}) => {
                     : 'white'
                 }, styles.cont2]}>
               <View style={styles.cover}>
-                {console.log(item.id)}
+                {/* {console.log(item.id)} */}
                 <Image source={{uri: `https://${item.cover}`}} style={styles.image} />
               </View>
               <Text style={styles.text}>{item.name} </Text>

@@ -38,18 +38,11 @@ const ProductsList = ({ data }) =>{
                   </View>
                   <View style={styles.column}>
                     {quantity=== 0 ?(
-                      cartItems.length < 3 ? 
                       (
                       <TouchableOpacity style={styles.btn} onPress={() => increaseCartQuantity(item.id)}>
                         <Text style={styles.btnText}>+ Añadir al Carrito</Text>
                       </TouchableOpacity>
                       )
-                    :
-                    (
-                    <TouchableOpacity disabled={true} style={[styles.btn, {opacity: 0.6}]} onPress={() => increaseCartQuantity(item.id)}>
-                      <Text style={styles.btnText}>+ Añadir al Carrito</Text>
-                    </TouchableOpacity>
-                    )
                       
                     ): (
                       <View style={styles.cartView}>

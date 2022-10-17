@@ -106,11 +106,11 @@ const ShoppingCart = ({ route }) => {
          </View>
         
       </View>)}
-          <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
-            <Text style={styles.ComprarbtnText}>
-              Comprar
-            </Text>
-          </TouchableOpacity>
+      <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
+        <Text style={styles.ComprarbtnText}>
+          Comprar
+        </Text>
+      </TouchableOpacity>
 
       {/* <FlatList 
         data={producto}
@@ -150,22 +150,18 @@ const styles = StyleSheet.create({
     width:'5%',
     fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: '10%',
+    // marginBottom: '10%',
     // marginBottom: '10%',
     color: 'black',
     textAlign: 'center',
     alignItems: 'center'
   },
   title: {
-    width:'90%',
-    fontSize: 30,
+    fontSize: 25,
+    marginLeft: '5%',
     fontWeight: 'bold',
-    marginBottom: '10%',
-    marginLeft: -5,
-    // marginBottom: '10%',
     color: 'black',
-    textAlign: 'center',
-    alignItems: 'center'
+    textAlign: 'center'
   },
   totalText: {
     width:'95%',

@@ -1,20 +1,8 @@
-import reactotron from 'reactotron-react-native';
 import React, {useEffect, useState} from 'react';
-import { Provider } from 'react-redux';
 import axios from 'axios';
-import Loading from './loadingscreen';
 import ProductsList from './productslist';
-import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  RefreshControl,
-  StatusBar,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  ActivityIndicator
-  } from 'react-native';
+import { SafeAreaView, ScrollView, View, RefreshControl, StatusBar, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
 
