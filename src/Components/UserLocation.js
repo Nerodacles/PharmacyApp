@@ -144,7 +144,7 @@ export default function UserLocation({navigation}) {
               onPress={() => console.log('hola mundo')}
               coordinate={{ latitude : location?.coords?.latitude , longitude : location?.coords?.longitude }}
             >
-              <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/>
+              {/* <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/> */}
             </Marker>}
           </MapView>
         <View style={{ alignItems:'center', flex: 1, justifyContent: 'flex-end', width: "100%", height: "98%", margin: 10, position: 'absolute'}}>

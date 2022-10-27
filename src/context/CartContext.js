@@ -21,9 +21,6 @@ export const CartProvider = ({children}) => {
     }
 
     const increaseCartQuantity = (id) => {
-        if (cartItems.length > 3){
-            return console.log('Error')
-        }
         setCartItems(currItems => {
             if (currItems.find(item => item.id === id) == null) {
                 return [...currItems, {id, quantity: 1}]

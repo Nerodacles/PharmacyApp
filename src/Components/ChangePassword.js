@@ -84,7 +84,7 @@ const ChangePassword = ({navigation}) => {
           <TextInput
             style={styles.input}
             onChangeText={onChangeOldPasswd}
-            placeholder="Barrio San Pablo, Edificio 4, Apartamento 3"
+            placeholder="Introduzca su contraseña anterior"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>
@@ -94,7 +94,7 @@ const ChangePassword = ({navigation}) => {
           <TextInput
             style={styles.input}
             onChangeText={onChangeNewPasswd}
-            placeholder="Calle Duarte"
+            placeholder="Introduzca su nueva contraseña"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>
@@ -105,7 +105,7 @@ const ChangePassword = ({navigation}) => {
             style={styles.input}
             onChangeText={onChangeConfPasswd}
 			
-            placeholder="No. 10"
+            placeholder="Introduzca su nueva contraseña nuevamente"
             placeholderTextColor={'#C0C0C0'}
           />
         </View>

@@ -76,26 +76,44 @@ const HomeScreen = ({route}) => {
                         <View style={{width:"100%", height: '100%'}}>
                             {
                                 userInfo.role === 'delivery' ? 
-                                <Carousel
-                                    ref={isCarousel}
-                                    layout={'tinder'}
-                                    loop={true}
-                                    enableSnap={false}
-                                    loopClonesPerSide={13}
-                                    layoutCardOffset={9} 
-                                    data={items}
-                                    containerCustomStyle={styles.carouselContainer}
-                                    sliderWidth={SLIDER_WIDTH}
-                                    itemWidth={ITEM_WIDTH}
-                                    useScrollView={true}
-                                    renderItem={({item: item}) => 
+                                <View style={{width: '100%', height: '80%'}}>
+                                    <Carousel
+                                        ref={isCarousel}
+                                        layout={'stack'}
+                                        enableSnap={true}
+                                        layoutCardOffset={18} 
+                                        data={items}
+                                        containerCustomStyle={styles.carouselContainer}
+                                        contentContainerStyle={{justifyContent: 'center'}}
+                                        sliderWidth={SLIDER_WIDTH}
+                                        itemWidth={ITEM_WIDTH}
+                                        useScrollView={true}
+                                        onSnapToItem={(index => setActiveSlide(index))}
+                                        renderItem={({item: item}) => 
                                         <View style={styles.itemContainer}>
-                                        <View style={styles.cover}>
-                                            <Image source={{uri: `https://${item.cover}`}} style={styles.img} />
-                                        </View>
-                                        <Text style={styles.itemLabel}>{item.id} </Text>
+                                            <Text style={styles.itemLabel}>{item.id} </Text>
+                                            <Text style={styles.itemLabel}>{item.user} </Text>
                                         </View>}
-                                />
+                                    />
+                                    <Pagination
+                                        dotsLength={items.length}
+                                        activeDotIndex={activeSlide}
+                                        carouselRef={isCarousel}
+                                        dotStyle={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            marginHorizontal: 8,
+                                            backgroundColor: 'white',
+                                        }}
+                                        tappableDots={true}
+                                        inactiveDotStyle={{
+                                            // Define styles for inactive dots here
+                                        }}
+                                        inactiveDotOpacity={0.4}
+                                        inactiveDotScale={0.6}
+                                    />
+                                </View>
                                 // items.map((item) => (
                                 //     <View key={item.id} style={{color: 'black', margin: 5}}>
                                 //         <Text style={{color: '#fff'}}>{item.id}</Text>
@@ -123,24 +141,24 @@ const HomeScreen = ({route}) => {
                                         <Text style={styles.itemLabel}>{item.name} </Text>
                                         </View>}
                                     />
-                                <Pagination
-                                    dotsLength={items.length}
-                                    activeDotIndex={activeSlide}
-                                    carouselRef={isCarousel}
-                                    dotStyle={{
-                                        width: 10,
-                                        height: 10,
-                                        borderRadius: 5,
-                                        marginHorizontal: 8,
-                                        backgroundColor: 'white',
-                                    }}
-                                    tappableDots={true}
-                                    inactiveDotStyle={{
-                                        // Define styles for inactive dots here
-                                    }}
-                                    inactiveDotOpacity={0.4}
-                                    inactiveDotScale={0.6}
-                                />
+                                    <Pagination
+                                        dotsLength={items.length}
+                                        activeDotIndex={activeSlide}
+                                        carouselRef={isCarousel}
+                                        dotStyle={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            marginHorizontal: 8,
+                                            backgroundColor: 'white',
+                                        }}
+                                        tappableDots={true}
+                                        inactiveDotStyle={{
+                                            // Define styles for inactive dots here
+                                        }}
+                                        inactiveDotOpacity={0.4}
+                                        inactiveDotScale={0.6}
+                                    />
                                 </View>
                                 
                                 // items.map((item) => (

@@ -8,7 +8,6 @@ import Feather from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
@@ -17,6 +16,7 @@ const MapScreen = ({route}) => {
     const [ location, setLocation ] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [order, setOrder] = useState([]);
+    const [idOrder, setIdOrder] = useState('');
     const { userToken, userInfo } = useContext(AuthContext);
     const [ region, setRegion ] = useState({
         latitude: location ? location.coords?.latitude : 18.947729907033047,
@@ -34,15 +34,21 @@ const MapScreen = ({route}) => {
         return Promise.reject(error)
       }
     )
-
-    const deliver = (id) =>{
-      axiosInstance.post(`orders/deliver/${id}`, {id: id})
-    }
-
-    useEffect(() => {
+    
+    const getOrdenes = () => {
       axiosInstance.get(`orders/delivery/${userInfo.id}`).then((res) => {
         setOrder(res.data);
       });
+    }
+
+    const deliver = (id) =>{
+      axiosInstance.post(`orders/deliver/${id}`, {id: id}).then(() => {
+        getOrdenes()
+      })
+    }
+
+    useEffect(() => {
+      getOrdenes()
     }, []);
 
     const hasLocationPermission = async () => {
@@ -76,7 +82,7 @@ const MapScreen = ({route}) => {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           })
-          axiosInstance.patch(`users/${userInfo.id}`, {location: location})
+          axiosInstance.patch(`users/${userInfo.id}`, {location: position.coords})
 
         }, (error) => {
           Alert.alert(`Code ${error.code}`, error.message);
@@ -118,7 +124,7 @@ const MapScreen = ({route}) => {
                 minZoomLevel={15}
                 region={region}
                 showsScale={true}
-                onRegionChange={onRegionChange}
+                // onRegionChange={onRegionChange}
                 style={styles.map}>
                 <Marker pinColor={'navy'} title={"Farmacia"} coordinate={{ latitude : 18.9478715 , longitude : -70.4059083 }} >
                     <Icon size={35} name="prescription-bottle" color='#000' />
@@ -128,16 +134,15 @@ const MapScreen = ({route}) => {
                 </Marker>}
                 {order.map(markers => {
                   if (markers.delivered === 'on the way'){
-                    return (<Marker key={markers.id} onPress={() =>  setModalVisible(true)} coordinate={{ latitude: Number(markers.location.latitude), longitude: Number(markers.location.longitude) }} title={markers.user} >
+                    return (<Marker key={markers.id} onPress={() => (setIdOrder(markers.id), setModalVisible(true))} coordinate={{ latitude: Number(markers.location.latitude), longitude: Number(markers.location.longitude) }} title={markers.user} >
                     <Iconos size={35} name="person" color='#000' />
                     <View style={styles.container}>
-                      {console.log(modalVisible)}
                       <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
                         <View style={styles.centeredView}>
                           <View style={styles.modalView}>
                             <Text style={styles.modalText}>¿Entrego la orden?</Text>
                               <View style={styles.contenedor}>
-                                <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (deliver(markers.id), setModalVisible(!modalVisible))}>
+                                <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (deliver(idOrder), setModalVisible(!modalVisible))}>
                                   <Text style={styles.textStyle}>Si</Text>
                                 </Pressable>
                                 <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
@@ -146,9 +151,10 @@ const MapScreen = ({route}) => {
                               </View>
                             </View>
                           </View>
-                      </Modal>
+                      </Modal>  
                     </View>
-                    </Marker>)
+                    </Marker>
+                    )
                     } else{
                       return null
                   }

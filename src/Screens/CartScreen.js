@@ -71,7 +71,6 @@ const ShoppingCart = ({ route }) => {
     const createOrder = async() =>{
       const response = await axiosInstance.post(`orders`,  {drugs: cartItems})
       setOrder(response.data.drugs)
-      console.log(order)
       setCartItems([])
     }
 
@@ -91,45 +90,25 @@ const ShoppingCart = ({ route }) => {
         </View>
       ):
       (<View style={styles.cont3}>
-         {cartItems.map(item => (
+         <View style={{height:'60%',}}>
+          {cartItems.map(item => (
             <CartItems key={item.id} {...item} />
          ))
          }
+         </View>
          <View style={styles.totalCont}>
             <Text style={styles.totalText}>
               Total: RD${cartItems.reduce((total, cartItem) => {
                 const item = itemInCart.find(item => item.id === cartItem.id)
-                // console.log('prueba:' + cartItems.length)
                 return (total + (item?.price || 0) * cartItem.quantity)
               }, 0)}
             </Text>
          </View>
-        
       </View>)}
-      <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
-        <Text style={styles.ComprarbtnText}>
-          Comprar
-        </Text>
-      </TouchableOpacity>
-
-      {/* <FlatList 
-        data={producto}
-        numColumns={1}
-        style={styles.cont}
-        renderItem={({item: item}) => 
-          <Pressable 
-            onPress={() => navigation.navigate('Info', {id: item.id, name: item.name})}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed
-                  ? 'rgb(210, 230, 255)'
-                  : 'white'
-              }, styles.cont2]}>
-            <View style={styles.cover}>
-              <Image source={{uri: `https://${item.cover}`}} style={styles.image} />
-            </View>
-            <Text style={styles.text}>{item.name} </Text>
-          </Pressable>} /> */}
+            <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
+            <Text style={styles.ComprarbtnText}>Comprar</Text>
+            </TouchableOpacity>
+      
     </View>
   ) 
 }
@@ -205,6 +184,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red'
   },
   cont3: {
+    flex: 2,
     borderRadius: 8,
     paddingVertical:3,
     alignItems:"center",
@@ -230,6 +210,7 @@ const styles = StyleSheet.create({
 
   },
   totalCont: {
+    justifyContent: 'flex-end',
     borderRadius: 8,
     paddingVertical:5,
     width: '100%',

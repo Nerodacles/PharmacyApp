@@ -59,14 +59,14 @@ const TabNavigator = (props) => {
                 <Tab.Screen name="Ordenes de Clientes" component={OrdersScreen} options={{
                     tabBarIcon: ({color, size}) => {
                         return <Icon name="book" color={color} size={size} />
-                    }, tabBarBadge: (cartQuantity === 0) ?  null : cartQuantity
+                    }
                 }} />
             : null}
             {isDelivery() ?
                 <Tab.Screen name="Mapa" component={MapScreen} options={{
                     tabBarIcon: ({color, size}) => {
                         return <Icon name="map" color={color} size={size} />
-                    }, tabBarBadge: (cartQuantity === 0) ?  null : cartQuantity
+                    }
                 }} />
             : null}
             <Tab.Screen name="Perfil" component={ProfileScreen}  options={{

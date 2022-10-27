@@ -1,10 +1,10 @@
-import React, {useContext} from 'react';
-import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable} from 'react-native';
+import React, {useContext, useState} from 'react';
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable, Modal} from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = ({ navigation }) =>{
-    const { logout } = useContext(AuthContext);
-    const { userInfo } = useContext(AuthContext);
+    const [modalVisible, setModalVisible] = useState(false);
+    const { logout, userInfo } = useContext(AuthContext);
 
     function isDelivery() {
         const {userInfo} = useContext(AuthContext);
@@ -14,6 +14,11 @@ const ProfileScreen = ({ navigation }) =>{
         return false
     }
     isDelivery()
+
+    function signOut () {
+        logout()
+        setModalVisible(false)
+      }
 
     return(
         <View style={style.container}>
@@ -73,10 +78,27 @@ const ProfileScreen = ({ navigation }) =>{
                     }
                 </View>
                 <View style={style.cont3}>
-                    <TouchableOpacity style={style.btn} onPress={() => {logout()}}>
+                    <TouchableOpacity style={style.btn} onPress={() => setModalVisible(true) }>
                         <Text style={style.btnText}>Cerrar Sesión</Text>
                     </TouchableOpacity>
                 </View>
+            </View>
+            <View style={style.modalContainer}>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
+                    <View style={style.centeredView}>
+                    <View style={style.modalView}>
+                        <Text style={style.modalText}>Desea cerrar sesión?</Text>
+                        <View style={style.contenedor}>
+                            <Pressable style={[style.button, style.buttonOpen]} onPress={() => signOut()}>
+                            <Text style={style.textStyle}>Aceptar</Text>
+                            </Pressable>
+                            <Pressable style={[style.button, style.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={style.textStyle}>Cancelar</Text>
+                            </Pressable>
+                        </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </View>
     )
@@ -153,6 +175,64 @@ const style =StyleSheet.create({
         width:"100%",
         paddingHorizontal:10,
         paddingTop:15,
+      },
+      modalContainer: {
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        width: '50%',
+        // alignItems:'center', flex: 1, justifyContent: 'flex-end', width: "100%", height: "98%", margin: 10, position: 'absolute',
+        justifyContent: 'center',
+      },
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        width: '100%',
+        height:'70%',
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor:"white",
+        borderRadius: 60,
+        padding: 35,
+        position:'absolute',
+        alignItems: "center",
+        shadowColor: "black",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 10,
+      },
+      button: {
+        borderRadius: 40,
+        padding: 20,
+        margin: 10,
+        elevation: 2,
+      },
+      buttonOpen: {
+        backgroundColor: "#4cc3eb",
+        fontSize: 50,
+        lineHeight: 21,
+        letterSpacing: 0.25,
+      },
+      buttonClose: {
+        backgroundColor: "#E2443B",
+        fontSize: 50,
+        lineHeight: 21,
+        letterSpacing: 0.25,
+      },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        color: 'black'
+      },
+      contenedor: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
       }
 })
 
