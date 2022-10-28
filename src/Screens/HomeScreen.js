@@ -17,8 +17,6 @@ const HomeScreen = ({route}) => {
     const [ activeSlide, setActiveSlide ] = useState(0)
     const { userInfo, userToken } = useContext(AuthContext);
     const isCarousel = useRef(null)
-    // const { metodo } = route.params
-    // console.log(metodo)
 
     axiosInstance.interceptors.request.use(
         config => {
@@ -38,12 +36,12 @@ const HomeScreen = ({route}) => {
             });
         }
         else {
-            axiosInstance.get('api/getAll').then((res) => {
+            axiosInstance.get('api/topDrugs').then((res) => {
                 setItems([]);
-                return setItems(res.data);
-            });
+                return setItems(res.data.data)
+            })
         }
-    }, []);
+    }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: "#FFF", width: '100%', height: '100%' }}>
@@ -104,21 +102,13 @@ const HomeScreen = ({route}) => {
                                             height: 10,
                                             borderRadius: 5,
                                             marginHorizontal: 8,
-                                            backgroundColor: 'white',
+                                            backgroundColor: 'white'
                                         }}
                                         tappableDots={true}
-                                        inactiveDotStyle={{
-                                            // Define styles for inactive dots here
-                                        }}
                                         inactiveDotOpacity={0.4}
                                         inactiveDotScale={0.6}
                                     />
                                 </View>
-                                // items.map((item) => (
-                                //     <View key={item.id} style={{color: 'black', margin: 5}}>
-                                //         <Text style={{color: '#fff'}}>{item.id}</Text>
-                                //     </View>
-                                // ))
                                 :
                                 <View style={{width: '100%', height: '80%'}}>
                                     <Carousel
@@ -153,28 +143,13 @@ const HomeScreen = ({route}) => {
                                             backgroundColor: 'white',
                                         }}
                                         tappableDots={true}
-                                        inactiveDotStyle={{
-                                            // Define styles for inactive dots here
-                                        }}
                                         inactiveDotOpacity={0.4}
                                         inactiveDotScale={0.6}
                                     />
                                 </View>
-                                
-                                // items.map((item) => (
-                                    //     <View key={item.id} style={{ margin: 5}}>
-                                    //         <View style={styles.cover}>
-                                    //             <Image source={{uri: `https://${item.cover}`}} style={styles.img}/>
-                                    //         </View>
-                                    //         <Text style={{color: '#fff'}}>{item.name}</Text>
-                                    //     </View>
-                                    // ))
                                 }
                         </View>
-                            
-                        
                     </View>
-                        
                 </View>
             </View>
             
@@ -212,7 +187,7 @@ const styles = StyleSheet.create({
     carouselContainer: {
         // marginTop: 50,
         alignSelf: 'center',
-      },
+    },
     itemContainer: {
         // width: ITEM_WIDTH,
         // height: ITEM_HEIGHT,
@@ -220,11 +195,11 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         margin: 10,
         height: '90%', justifyContent: 'center', backgroundColor:"#FFF", borderRadius:20, paddingHorizontal:30, shadowColor: "#000", shadowOffset: { width: 0, height: 7, }, shadowOpacity: 0.41, shadowRadius: 9.11, elevation: 14,
-      },
-      itemLabel: {
+    },
+    itemLabel: {
         color: 'black',
         fontSize: 24
-      },
+    },
     map: {
         position: 'absolute',
         top: 0,
@@ -240,8 +215,8 @@ const styles = StyleSheet.create({
         resizeMode:"cover"
     },
     cover:{
-        height:200,
-        width:200,
+        height: 200,
+        width: 200,
     },
 });
 

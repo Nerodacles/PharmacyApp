@@ -9,7 +9,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/AuthContext';
 
-const axiosInstance = axios.create({ baseURL: 'http://pharmacy.jmcv.codes/' });
+const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const LoginScreen = ({navigation}) => {
     const {login} = useContext(AuthContext);

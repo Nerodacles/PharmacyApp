@@ -44,25 +44,32 @@ const PaymentMethod = ({route}) => {
   const {latitude, longitude, direccion, calle, numero, referencia} = route.params;
 
 	axiosInstance.interceptors.request.use(
-    	config => { config.headers['authorization'] = userToken; 
-		return config;
-		}, error => { return Promise.reject(error);
-    	},
+    config => { 
+      config.headers['authorization'] = userToken 
+      return config
+		},
+    error => { return Promise.reject(error) },
   );
 
   function onMessage(e) {
     let data = JSON.parse(e.nativeEvent.data)
     setShowGateway(false);
-    reactotron.log(data);
     webviewRef.current.postMessage(
-      JSON.stringify({reply: 'reply'}),
-      '*'
+      JSON.stringify({reply: 'reply'}), '*'
     )
+    console.log(e)
     // if (payment.status === 'COMPLETED') {
     //   alert('PAYMENT MADE SUCCESSFULLY!');
     // } else {
     //   alert('PAYMENT FAILED. PLEASE TRY AGAIN.');
     // }
+  }
+
+  async function onPaypalSuccess(e) {
+    if (e.url.includes('https://pharmacy.jmcv.codes/paypal/success')) {
+      setShowGateway(false);
+      const response = await axiosInstance.get(e.url)
+    }
   }
 
   const onChangeCantidad = cantidad => {
@@ -185,12 +192,12 @@ const PaymentMethod = ({route}) => {
                 </View>
                 <WebView
                   ref={webviewRef}
-                  canGoBack={true}
                   canGoForward={true}
-                  source={{uri: `${link}`}}
+                  source={{ uri: `${link}` }}
+                  onNavigationStateChange={data => onPaypalSuccess(data) }
                   domStorageEnabled
                   javaScriptEnabled
-                  onMessage={onMessage}
+                  onMessage={data => onMessage(data)}
                   style={{flex: 1}}
                 />
               </View>
