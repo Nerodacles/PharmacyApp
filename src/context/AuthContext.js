@@ -2,6 +2,7 @@ import React, {createContext, useState, useEffect} from 'react';
 import { Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
@@ -14,20 +15,26 @@ export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState('');
 
   const login = (username, password) => {
-    setIsLoading(true);
-    try{
+    if (!username.trim() || !password.trim()){
+      alert("Usuario, correo o contraseña invalido");
+      return;
+    } else {
+      setIsLoading(true)
+      try{
         axiosInstance.post(`users/login`, {
-            username,
-            password,
+          username,
+          password,
         })
         .then(res => {
           let userInfo = res.data;
+          console.log(userInfo)
           if (userInfo.token !== null || userInfo.token !== undefined){
             if (!userInfo.status){
               setIsLoading(false);
               alert('Usuario no activo.\nContacte al administrador');
               return
             }
+            setIsLoading(true);
             setUserInfo(userInfo);
             setUserToken(userInfo.token)
 
@@ -38,11 +45,19 @@ export const AuthProvider = ({children}) => {
             AsyncStorage.removeItem('userInfo')
             AsyncStorage.removeItem('userToken')
           }
-        })
-    } catch (error){
-        console.log(error)
-        alert("Un error ha ocurrido");
-        setIsLoading(false);
+          }).catch(
+            function (error) {
+              if (error.toJSON.status = 400){
+                alert('Usuario y/o Contraseña incorrecta')
+              }
+              setIsLoading(false)
+            }
+          )
+      } catch (error){
+          console.log(error.toJSON())
+          alert("Un error ha ocurrido");
+          setIsLoading(false);
+      }
     }
   }
   const logout = () => {

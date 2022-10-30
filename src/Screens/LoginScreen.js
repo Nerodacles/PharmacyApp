@@ -64,7 +64,9 @@ const LoginScreen = ({navigation}) => {
             setUserToken(userInfo.token);
         })
         .catch((e) => {
-            console.log(`Login error`)
+            if (e.toJSON.status = 500){
+                alert('Usuario, correo y/o Contraseña invalido')
+              }
         })
     }
 

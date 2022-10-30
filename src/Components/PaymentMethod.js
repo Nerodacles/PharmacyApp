@@ -28,7 +28,7 @@ const axiosInstance = axios.create({baseURL: 'https://pharmacy.jmcv.codes/'});
 const PaymentMethod = ({route}) => {
   const [paymentMet, setPaymentMet] = useState([
     {id: 1, name: 'Efectivo'},
-    {id: 2, name: 'Paypal/Tarjeta de Credito'},
+    {id: 2, name: 'Paypal'},
   ]);
   const webviewRef = useRef();
   const [open, setOpen] = useState(false);
@@ -37,6 +37,7 @@ const PaymentMethod = ({route}) => {
   const [cantidad, setCantidad] = useState(0);
   const navigation = useNavigation();
   const [order, setOrder] = useState([]);
+  const [paypalArr, setPaypalArr] = useState([]);
   const [metodo, setMetodo] = useState([]);
   const [link, setLink] = useState('');
   const {cartItems, cartQuantity, setCartItems} = useContext(CartContext);
@@ -57,7 +58,7 @@ const PaymentMethod = ({route}) => {
     webviewRef.current.postMessage(
       JSON.stringify({reply: 'reply'}), '*'
     )
-    console.log(e)
+    console.log('a: '+ e)
     // if (payment.status === 'COMPLETED') {
     //   alert('PAYMENT MADE SUCCESSFULLY!');
     // } else {
@@ -69,6 +70,7 @@ const PaymentMethod = ({route}) => {
     if (e.url.includes('https://pharmacy.jmcv.codes/paypal/success')) {
       setShowGateway(false);
       const response = await axiosInstance.get(e.url)
+      setPaypalArr(response.data)
     }
   }
 
@@ -83,28 +85,51 @@ const PaymentMethod = ({route}) => {
   }
 
   const createOrder = async () => {
-    const response = await axiosInstance.post(`orders`, {
-      drugs: cartItems,
-
-      location: {
-        latitude: latitude,
-        longitude: longitude,
-      },
-      
-      payment: {
-        paymentMethod: value,
-        cash: value === 'Efectivo' ? cantidad : null,
-        paypal: value === 'Paypal/Tarjeta de Credito' ? cantidad : null,
-      },
-
-      moreDetails: {
-        direction: direccion,
-        street: calle,
-        houseNumber: numero,
-        reference: referencia,
-      },
-    });
-    setOrder(response.data);
+    if (value === 'Efectivo'){
+      const response = await axiosInstance.post(`orders`, {
+        drugs: cartItems,
+  
+        location: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+        
+        payment: {
+          paymentMethod: value,
+          cash: cantidad,
+        },
+  
+        moreDetails: {
+          direction: direccion,
+          street: calle,
+          houseNumber: numero,
+          reference: referencia,
+        },
+      });
+      setOrder(response.data);
+    } else{
+      const response = await axiosInstance.post(`orders`, {
+        drugs: cartItems,
+  
+        location: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+        
+        payment: {
+          paymentMethod: value && 'paypal',
+          paypal: paypalArr,
+        },
+  
+        moreDetails: {
+          direction: direccion,
+          street: calle,
+          houseNumber: numero,
+          reference: referencia,
+        },
+      });
+      setOrder(response.data);
+    }
 
     setCartItems([])
     navigation.navigate('Home', { screen: 'Home2' })
@@ -155,7 +180,7 @@ const PaymentMethod = ({route}) => {
             />
           </View>
         ) :  null }
-        { value === 'Paypal/Tarjeta de Credito' ? (
+        { value === 'Paypal' ? (
           <View style={styles.btnCon}>
             <TouchableOpacity
               style={styles.btn}

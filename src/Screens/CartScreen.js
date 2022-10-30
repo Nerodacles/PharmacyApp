@@ -103,11 +103,11 @@ const ShoppingCart = ({ route }) => {
                 return (total + (item?.price || 0) * cartItem.quantity)
               }, 0)}
             </Text>
-         </View>
-      </View>)}
             <TouchableOpacity style={styles.Comprarbtn} onPress={() => navigation.navigate('UserLocation')}>
             <Text style={styles.ComprarbtnText}>Comprar</Text>
             </TouchableOpacity>
+         </View>
+      </View>)}
       
     </View>
   ) 
@@ -224,6 +224,8 @@ const styles = StyleSheet.create({
   },
   Comprarbtn:{
     backgroundColor: "#E2443B",
+    marginHorizontal:10, 
+    alignItems: 'center',
     paddingHorizontal:40,
     paddingVertical:15,
     borderRadius:30,
