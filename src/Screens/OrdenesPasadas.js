@@ -13,12 +13,13 @@ const Tab = createMaterialTopTabNavigator();
 
 const OrdenesPasadas = ({ navigation }) => {
   const { userToken, userInfo }= useContext(AuthContext);
-  const [modalVisible, setModalVisible] = useState(false);
   const [detailsModal, setDetailsModal] = useState([]);
+  const [details, setDetails] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [ isLoading, setIsLoading ] = useState(false)
   const [ ordenes, setOrdenes ] = useState([]);
 
-  console.log(detailsModal)
+  // console.log(detailsModal)
   
   axiosInstance.interceptors.request.use(
     config => {
@@ -54,6 +55,7 @@ const OrdenesPasadas = ({ navigation }) => {
   } 
 
   function Completas() {
+    const [detailsModal, setDetailsModal] = useState([]);
     return(
       
       <SafeAreaView style={{ flex:1,width:'100%', height: "100%", alignItems: 'center', backgroundColor: '#FFF',}}>
@@ -69,7 +71,7 @@ const OrdenesPasadas = ({ navigation }) => {
               <Text style={[styles.text, {marginBottom:5, alignSelf: 'flex-end'}]}><Text style={[styles.text, {color:'#808080' }]}>Precio Total</Text> RD$ {item?.totalPrice.toLocaleString('en-us') } </Text>
               <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between', marginVertical: 5}}>
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity onPress={() => (setDetailsModal(item) ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
+                  <TouchableOpacity onPress={() => (setDetailsModal(item), setDetails(item.drugs) ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
                     <Text numberOfLines={1} style={[styles.textSign, {color: '#FF6347'}]}> Detalles </Text>
                   </TouchableOpacity>
                 </View>
@@ -86,9 +88,9 @@ const OrdenesPasadas = ({ navigation }) => {
                       <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                         Farmacos
                       </Text>
-                        {detailsModal.drugs.map((drug) => {
+                        {details.map((drug, i) => {
                           return(
-                            <Text style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )
@@ -131,7 +133,7 @@ const OrdenesPasadas = ({ navigation }) => {
               <Text style={[styles.text, {marginBottom:5, alignSelf: 'flex-end'}]}><Text style={[styles.text, {color:'#808080' }]}>Precio Total</Text> RD$ {item?.totalPrice.toLocaleString('en-us') } </Text>
               <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between', marginVertical: 5}}>
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity onPress={() => (setDetailsModal(item) ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
+                  <TouchableOpacity onPress={() => (setDetailsModal(item), setDetails(item.drugs)  ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
                     <Text numberOfLines={1} style={[styles.textSign, {color: '#FF6347'}]}> Detalles </Text>
                   </TouchableOpacity>
                 </View>
@@ -148,9 +150,10 @@ const OrdenesPasadas = ({ navigation }) => {
                       <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                         Farmacos
                       </Text>
-                        {detailsModal.drugs.map((drug) => {
-                          return(
-                            <Text style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                      {console.log(detailsModal.drugs)}
+                        {details.map((drug, i) => {
+                          return( 
+                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )
@@ -193,7 +196,7 @@ const OrdenesPasadas = ({ navigation }) => {
               <Text style={[styles.text, {marginBottom:5, alignSelf: 'flex-end'}]}><Text style={[styles.text, {color:'#808080' }]}>Precio Total</Text> RD$ {item?.totalPrice.toLocaleString('en-us') } </Text>
               <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between', marginVertical: 5}}>
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity onPress={() => (setDetailsModal(item) ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
+                  <TouchableOpacity onPress={() => (setDetailsModal(item), setDetails(item.drugs)  ,setModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 1, borderRadius: 20}]}>
                     <Text numberOfLines={1} style={[styles.textSign, {color: '#FF6347'}]}> Detalles </Text>
                   </TouchableOpacity>
                 </View>
@@ -210,9 +213,9 @@ const OrdenesPasadas = ({ navigation }) => {
                       <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                         Farmacos
                       </Text>
-                        {detailsModal.drugs.map((drug) => {
+                        {details.map((drug, i) => {
                           return(
-                            <Text style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )

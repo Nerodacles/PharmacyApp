@@ -26,6 +26,7 @@ const MapScreen = ({route}) => {
     const [order, setOrder] = useState([]);
     const [idOrder, setIdOrder] = useState('');
     const [detailsModal, setDetailsModal] = useState([]);
+    const [details, setDetails] = useState([]);
     const { userToken, userInfo } = useContext(AuthContext);
     const [ region, setRegion ] = useState({
         latitude: location ? location.coords?.latitude : 18.947729907033047,
@@ -282,7 +283,7 @@ const MapScreen = ({route}) => {
                               })} */}
                           </View>
                           <View style={styles.textContent}>
-                            <TouchableOpacity onPress={() => (setDetailsModal(markers) ,setDetailsModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 0.5}]}>
+                            <TouchableOpacity onPress={() => (setDetailsModal(markers), setDetails(markers.drugs) ,setDetailsModalVisible(true))} style={[styles.signIn, {borderColor: '#000', borderWidth: 0.5}]}>
                               <Text numberOfLines={1} style={[styles.textSign, {color: '#FF6347'}]}> Detalles </Text>
                             </TouchableOpacity>
                             <View style={styles.buttonContainer}>
@@ -296,9 +297,10 @@ const MapScreen = ({route}) => {
                                   <View style={[styles.modalView, {width: '90%', height: '50%',}]}>
                                     <View style={{width: '100%', height: '60%'}}>
                                     <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
-                                      Farmacos
+                                      Farmacos, {detailsModal.user}
                                     </Text>
-                                      {detailsModal.drugs.map((drug, id) => {
+
+                                      {details.map((drug, id) => {
                                         return(
                                           <Text key={id} numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
                                             {drug.name}
