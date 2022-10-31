@@ -13,7 +13,6 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const {width, height} = Dimensions.get('window')
 
-    
 const CARD_HEIGHT = height/4
 const CARD_WIDTH = CARD_HEIGHT + 100
 
@@ -56,10 +55,6 @@ const MapScreen = ({route}) => {
         getOrdenes()
       })
     }
-
-    useEffect(() => {
-      getOrdenes()
-    }, []);
 
     const hasLocationPermission = async () => {
         if (Platform.OS === 'android') { return true }
@@ -114,8 +109,9 @@ const MapScreen = ({route}) => {
 
     
     useEffect(() => {
-      getLocation();
-      wait(10000).then(() => { getLocation() })
+      getLocation()
+      getOrdenes()
+      wait(10000).then(() => { getLocation(), getOrdenes() })
     }, [])
     
     let mapIndex = 0

@@ -12,7 +12,8 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 const Tab = createMaterialTopTabNavigator();
 
 const OrdersScreen = ({navigation}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalAcceptVisible, setModalAcceptVisible] = useState(false);
+  const [modalCancelVisible, setModalCancelVisible] = useState(false);
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState({});
   const [drugs, setDrugs] = useState([])
@@ -62,7 +63,12 @@ const OrdersScreen = ({navigation}) => {
     } 
     
     function acceptOrder(orden) {
-      setModalVisible(true)
+      setModalAcceptVisible(true)
+      setOrder(orden)
+    }
+
+    function cancelOrder(orden) {
+      setModalCancelVisible(true)
       setOrder(orden)
     }
     
@@ -71,10 +77,15 @@ const OrdersScreen = ({navigation}) => {
         axiosInstance.get('orders').then((res) => {
           setOrders(res.data);
         });
-      }
-      )
-      // navigation.navigate('MapScreen', {order: order})
-      setModalVisible(false)
+      })
+      setModalCancelVisible(false)
+    }
+
+    function cancel(id) {
+      axiosInstance.post(`orders/cancel/${id}`, {id: id}).then(() => {
+        axiosInstance.get('orders').then((res) => { setOrders(res.data) });
+      })
+      setModalCancelVisible(false)
     }
 
     function OrdenesActivas() {
@@ -85,7 +96,7 @@ const OrdersScreen = ({navigation}) => {
           {orders.map((order) => {
             if (order.delivered === 'on the way'){
               return (
-                <Pressable key={order.id} onPress={() => acceptOrder(order)}
+                <Pressable key={order.id} onPress={() => cancelOrder(order)}
                   style={({ pressed }) => [
                     {
                       backgroundColor: pressed
@@ -111,15 +122,15 @@ const OrdersScreen = ({navigation}) => {
           })}
     
           <View style={styles.container}>
-            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
+            <Modal animationType="slide" transparent={true} visible={modalCancelVisible} onRequestClose={() => { setModalCancelVisible(!modalCancelVisible) }} >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Desea aceptar la orden?</Text>
+                  <Text style={styles.modalText}>Desea cancelar la orden?</Text>
                     <View style={styles.contenedor}>
-                      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(order.id), setModalVisible(!modalVisible))}>
+                      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (cancel(order.id), setModalCancelVisible(!modalCancelVisible))}>
                         <Text style={styles.textStyle}>Aceptar</Text>
                       </Pressable>
-                      <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                      <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalCancelVisible(!modalCancelVisible)}>
                         <Text style={styles.textStyle}>Cancelar</Text>
                       </Pressable>
                     </View>
@@ -165,15 +176,15 @@ const OrdersScreen = ({navigation}) => {
           })}
     
           <View style={styles.container}>
-            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { setModalVisible(!modalVisible) }} >
+            <Modal animationType="slide" transparent={true} visible={modalAcceptVisible} onRequestClose={() => { setModalAcceptVisible(!modalAcceptVisible) }} >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Desea aceptar la orden?</Text>
                     <View style={styles.contenedor}>
-                      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(order.id), setModalVisible(!modalVisible))}>
+                      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => (accept(order.id), setModalAcceptVisible(!modalAcceptVisible))}>
                         <Text style={styles.textStyle}>Aceptar</Text>
                       </Pressable>
-                      <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                      <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalAcceptVisible(!modalAcceptVisible)}>
                         <Text style={styles.textStyle}>Cancelar</Text>
                       </Pressable>
                     </View>

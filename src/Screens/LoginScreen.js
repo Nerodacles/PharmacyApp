@@ -66,7 +66,7 @@ const LoginScreen = ({navigation}) => {
         .catch((e) => {
             if (e.toJSON.status = 500){
                 alert('Usuario, correo y/o Contraseña invalido')
-              }
+            }
         })
     }
 
@@ -109,6 +109,7 @@ const LoginScreen = ({navigation}) => {
                         </TextInput>
                         
                         <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
+                        <Text style={[styles.message, {color: 'black'}]}>micha no silve coñazo - Juanma e lo ma duro</Text>
                         
                         <TouchableOpacity style={styles.button} onPress={isLogin ? () => {login(username, password)} : onSubmit}>
                             <Text style={styles.buttonText}>{isLogin ? 'Iniciar Sesión' : 'Registrarte'}</Text>
