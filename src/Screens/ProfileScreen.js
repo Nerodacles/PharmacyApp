@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable, Modal} from 'react-native';
+import { Divider } from 'react-native-paper';
 import { AuthContext } from '../context/AuthContext';
 
 const ProfileScreen = ({ navigation }) =>{
@@ -51,6 +52,7 @@ const ProfileScreen = ({ navigation }) =>{
                             {userInfo ? userInfo.username: 'RandomUser'}
                         </Text>
                     </View>
+                    {/* <Divider style={{backgroundColor: 'white'}} /> */}
                     <View style={style.options}>
                         <Text style={style.subtitle}>
                             Correo:

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Alert,Animated ,Image, PermissionsAndroid, Platform, ScrollView, Modal, Pressable, StyleSheet, Text, ToastAndroid, TouchableOpacity, View, Dimensions} from 'react-native';
+import { Alert,Animated ,Image, PermissionsAndroid, Platform, ScrollView, Modal, Pressable, StyleSheet, Text, ToastAndroid, TouchableOpacity, View, Dimensions, SafeAreaView} from 'react-native';
 import Geolocation, { GeoPosition } from '@react-native-community/geolocation';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -8,13 +8,14 @@ import Feather from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import {getDistance, getPreciseDistance} from 'geolib';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const {width, height} = Dimensions.get('window')
 
 const CARD_HEIGHT = height/4
-const CARD_WIDTH = CARD_HEIGHT + 100
+const CARD_WIDTH = CARD_HEIGHT + 50
 
 
 const MapScreen = ({route}) => {
@@ -22,6 +23,7 @@ const MapScreen = ({route}) => {
     const [ location, setLocation ] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [detailsModalVisible, setDetailsModalVisible] = useState(false);
+    const [count, setCount] = useState(0)
     const [order, setOrder] = useState([]);
     const [idOrder, setIdOrder] = useState('');
     const [detailsModal, setDetailsModal] = useState([]);
@@ -106,12 +108,11 @@ const MapScreen = ({route}) => {
     function onRegionChange(region) {
       setRegion(region)
     }
-
     
     useEffect(() => {
       getLocation()
       getOrdenes()
-      wait(10000).then(() => { getLocation(), getOrdenes() })
+      wait(20000).then(() =>  getLocation() )
     }, [])
     
     let mapIndex = 0
@@ -248,27 +249,28 @@ const MapScreen = ({route}) => {
                 }
               ], { useNativeDriver: true })}>
                 {order.map((markers, index) => {
+                    let distance = getPreciseDistance({latitude: location ? location?.latitude : 18.947729907033047, longitude: location ? location?.longitude : -70.4059648798399, }, {latitude: markers.location.latitude, longitude: markers.location.longitude})
                     if (markers.delivered === 'on the way'){
                       return (
                         <View key={index} style={styles.card}>
                           <View style={styles.cardImage} >
-                            <Text numberOfLines={1} style={styles.cardtitle}>
+                            <Text numberOfLines={1} style={[styles.cardtitle, {textTransform: 'capitalize'}]}>
                               {markers.user}
                             </Text>
                             {/* <Text numberOfLines={1} style={[styles.cardDescription]}>
                               {markers.user}
                             </Text> */}
-                            <Text numberOfLines={1} style={styles.cardDescription}>
+                            <Text numberOfLines={1} style={[styles.cardDescription, {textTransform: 'capitalize'}]}>
                               {markers.moreDetails.direction}
                             </Text>
-                            <Text numberOfLines={1} style={styles.cardDescription}>
+                            <Text numberOfLines={1} style={[styles.cardDescription, {textTransform: 'capitalize'}]}>
                               {markers.moreDetails.street}
                             </Text>
                             <Text numberOfLines={1} style={styles.cardDescription}>
                               {markers.moreDetails.houseNumber}
                             </Text>
                             <Text numberOfLines={1} style={styles.cardDescription}>
-                              {markers.moreDetails.reference}
+                              {distance} Metros
                             </Text>
                             {/* {markers.drugs.map((drug, id) => {
                                 return(
@@ -283,7 +285,7 @@ const MapScreen = ({route}) => {
                               <Text numberOfLines={1} style={[styles.textSign, {color: '#FF6347'}]}> Detalles </Text>
                             </TouchableOpacity>
                             <View style={styles.buttonContainer}>
-                              <TouchableOpacity onPress={() => (setIdOrder(markers.id), setModalVisible(true))} style={[styles.signIn, { backgroundColor: '#E2443B' }]}>
+                              <TouchableOpacity onPress={() => distance < 10 ? (setIdOrder(markers.id), setModalVisible(true)) : ToastAndroid.show('Se encuentra demasiado lejos para hacer la entrega', ToastAndroid.LONG,) } style={[styles.signIn, { backgroundColor: '#E2443B' }]}>
                                 <Text numberOfLines={1} style={[styles.textSign, {color: '#FFF'}]}> Entregar </Text>
                               </TouchableOpacity>
                             </View>
@@ -291,20 +293,35 @@ const MapScreen = ({route}) => {
                               <Modal animationType="slide" transparent={true} visible={detailsModalVisible} onRequestClose={() => { setDetailsModalVisible(!detailsModalVisible) }} >
                                 <View style={styles.centeredView}>
                                   <View style={[styles.modalView, {width: '90%', height: '50%',}]}>
-                                    <View style={{width: '100%', height: '60%'}}>
-                                    <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
-                                      Farmacos, {detailsModal.user}
-                                    </Text>
-
-                                      {details.map((drug, id) => {
-                                        return(
-                                          <Text key={id} numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
-                                            {drug.name}
-                                          </Text>
-                                        )
-                                      })}
+                                    <SafeAreaView style={{width: '100%'}}>
+                                      <ScrollView>
+                                        <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                                          Farmacos
+                                        </Text>
+                                        {details.map((drug, id) => {
+                                          return(
+                                            <Text key={id} numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
+                                              {drug.name} x{drug.quantity}
+                                            </Text>
+                                          )
+                                        })}
+                                        <Text numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
+                                          Precio Total: {detailsModal.totalPrice}
+                                        </Text>
+                                      </ScrollView>
+                                    </SafeAreaView>
+                                    <View style={{width: '100%'}}>
+                                      <Text numberOfLines={1} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                                        Metodo de Pago
+                                      </Text>
+                                      <Text numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
+                                        {detailsModal?.payment?.paymentMethod}
+                                      </Text>
+                                      {detailsModal?.payment?.paymentMethod === 'Efectivo' ? <Text numberOfLines={1} style={{fontSize: 16, color:"#000"}}>
+                                        Cantidad con que pagará: {detailsModal?.payment?.cash}
+                                      </Text> : null}
                                     </View>
-                                      <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', width: '100%', height: '40%'}}>
+                                      <View style={{justifyContent: 'flex-end', alignItems: 'flex-end', width: '100%', height: '30%'}}>
                                         <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setDetailsModalVisible(!detailsModalVisible)}>
                                           <Text style={styles.textStyle}>Cerrar</Text>
                                         </Pressable>

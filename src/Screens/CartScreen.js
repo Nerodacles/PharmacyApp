@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '400',
     // width:'60%',
     color: 'black',
@@ -194,19 +194,19 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     // alignItems:"center",
     justifyContent: 'center',
-    width: '55%',
+    width: '60%',
   },
   row: {
     flexDirection: "row",
     justifyContent: 'flex-end',
     alignItems: 'center',
-    width: '45%',
+    width: '50%',
   },
   pxq: {
-    fontSize: 22,
+    fontSize: 18,
     color: 'black',
     textAlignVertical: 'center',
-    width: '60%'
+    // width: '60%'
 
   },
   totalCont: {
@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical:5,
     width: '100%',
-    
   },
   btn:{
     paddingHorizontal:10,

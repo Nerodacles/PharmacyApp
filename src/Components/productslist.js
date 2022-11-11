@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Divider } from 'react-native-paper';
 import { CartContext } from '../context/CartContext';
 import Feather from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
@@ -32,36 +33,40 @@ const ProductsList = ({ data }) =>{
                       <Image source={{uri : `https://${item.cover}`}} style={styles.image}/>
                     </View>
                     <View style={styles.rowSpace}>
-                    <Text style={styles.textName}>{item.name}</Text>
-                    <Text style={styles.textPrice}>RD${item.price}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.column}>
-                    {quantity=== 0 ?(
-                      (
-                      <TouchableOpacity style={styles.btn} onPress={() => increaseCartQuantity(item.id)}>
-                        <Text style={styles.btnText}>+ Añadir al Carrito</Text>
-                      </TouchableOpacity>
-                      )
-                      
-                    ): (
-                      <View style={styles.cartView}>
-                        <View style={styles.row}>
-                          <TouchableOpacity style={styles.btnInc} onPress={() => decreaseCartQuantity(item.id)}>
-                            <Feather name='minus' color="#000" size={25} />
-                          </TouchableOpacity>
-                          <Text style={styles.textPrice}>{quantity} en el carrito</Text>
-                          {quantity <10 && 
-                          <TouchableOpacity style={styles.btnInc} onPress={() => increaseCartQuantity(item.id)}>
-                            <Feather name='plus' color="#000" size={25} />
-                          </TouchableOpacity>}
+                      <View style={styles.column}>
+                        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+                          <Text style={styles.textName}>{item.name}</Text>
+                          <Text style={styles.textPrice}>RD${item.price}</Text>
                         </View>
+                        <View style={styles.column}>
+                          {quantity=== 0 ?(
+                            (
+                            <TouchableOpacity style={styles.btn} onPress={() => increaseCartQuantity(item.id)}>
+                              <Icon name='cart-plus' size={35} />
+                            </TouchableOpacity>
+                            )
+                            
+                          ): (
+                            <View style={styles.cartView}>
+                              <View style={[styles.row, {justifyContent: 'flex-end'}]}>
+                                <TouchableOpacity style={styles.btnInc} onPress={() => decreaseCartQuantity(item.id)}>
+                                  <Feather name='minus' color="#000" size={30} />
+                                </TouchableOpacity>
+                                <Text style={[styles.textPrice, {fontSize: 25}, quantity===10 && {marginRight: 44}]}>{quantity}</Text>
+                                {quantity <10 && 
+                                <TouchableOpacity style={styles.btnInc} onPress={() => increaseCartQuantity(item.id)}>
+                                  <Feather name='plus' color="#000" size={30} />
+                                </TouchableOpacity>}
+                                <TouchableOpacity style={styles.btnDelete} onPress={() => removeFromCart(item.id)}>
+                                  <Feather name='x' color="#FFF" size={26} />
+                                </TouchableOpacity>
+                              </View>
 
-                        <TouchableOpacity style={styles.btnDelete} onPress={() => removeFromCart(item.id)}>
-                          <Text style={styles.btnText}>Eliminar</Text>
-                        </TouchableOpacity>
+                            </View>
+                          )}
+                        </View>
                       </View>
-                    )}
+                    </View>
                   </View>
 
                 </View>
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
     },
     textPrice: {
       color: 'black',
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: '400',
       textAlignVertical: "center",
       marginHorizontal: 10,
@@ -128,10 +133,12 @@ const styles = StyleSheet.create({
     },
     btnDelete:{
       backgroundColor: "#E2443B",
-      width:200,
-      paddingVertical:10,
+      width:50,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical:5,
       borderRadius:30,
-      marginBottom: 5
+      marginHorizontal: 10
     },
     btnText: {
       textAlign: 'center',
@@ -140,8 +147,13 @@ const styles = StyleSheet.create({
     },
     btn:{
       backgroundColor: "#4cc3eb",
-      paddingVertical:10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical:5,
       borderRadius:30,
+      marginRight: 5,
+      alignSelf: 'flex-end',
+      width: 80,
       
     },
     btnInc:{
@@ -151,7 +163,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     column: {
-      justifyContent: 'center',
+      // justifyContent: 'center',
       width:'100%'
     },
     row: {
@@ -159,12 +171,12 @@ const styles = StyleSheet.create({
       width:'100%',
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: 5
+      // marginBottom: 5
     },
     cartView:{
-      flex:1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      // flex:1,
+      // alignItems: 'flex-end',
+      // justifyContent: 'center'
     }
     // logBox: {
     //   padding: 20,

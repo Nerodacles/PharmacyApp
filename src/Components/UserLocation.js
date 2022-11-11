@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Component} from 'react';
+import React, { useEffect, useRef, useState, useContext} from 'react';
 import {
   Alert,
   Image,
@@ -15,8 +15,10 @@ import Geolocation, { GeoPosition } from '@react-native-community/geolocation';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
 import Icon  from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather'
+import { AuthContext } from '../context/AuthContext';
 
 export default function UserLocation({navigation}) {
+  const { userInfo } = useContext(AuthContext);
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState({
     latitude: location ? location?.coords?.latitude : 18.947729907033047, 
@@ -69,13 +71,16 @@ export default function UserLocation({navigation}) {
       return;
     }
     Geolocation.getCurrentPosition((position) => {
+      _map.current.animateToRegion(
+        {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001
+        },
+          350
+      ),
       setLocation(position)
-      onRegionChange({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta:  0.00001,
-        longitudeDelta: 0.00001,
-      })
       console.log(position.coords);
     },
     error => {
@@ -106,6 +111,8 @@ export default function UserLocation({navigation}) {
   useEffect(() =>{
     getLocation()
   }, [])
+
+  const _map = React.useRef(null)
   
   return(
     <View style={styles.mainContainer}>
@@ -117,6 +124,7 @@ export default function UserLocation({navigation}) {
       </View>
       <View style={styles.MapContainer}>
         <MapView
+          ref={_map}
           mapType='standard'
           provider={PROVIDER_GOOGLE}
           enableZoomControl={true}
@@ -140,10 +148,13 @@ export default function UserLocation({navigation}) {
             </Marker>
             {location && <Marker
               pinColor={'navy'}
-              title={"Cliente 1"}
+              title={`${userInfo.username}`}
               onPress={() => console.log('hola mundo')}
               coordinate={{ latitude : location?.coords?.latitude , longitude : location?.coords?.longitude }}
             >
+              <View style={styles.markerWrap}>
+                <Image source={require('../assets/images/map_marker.png')} style={styles.marker} resizeMode='cover' />
+              </View>
               {/* <Image source={{uri : "https://upload.wikimedia.org/wikipedia/commons/2/26/Pacman_HD.png"}} style={{width: 25 , height: 25}}/> */}
             </Marker>}
           </MapView>
@@ -220,5 +231,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center'
+  },
+  markerWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+    width:50,
+    height:50,
+  },
+  marker: {
+    width: 30,
+    height: 30,
   },
 });

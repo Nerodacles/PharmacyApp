@@ -35,6 +35,7 @@ const Favorites = ({ navigation }) => {
     setIsLoading(true)
     const getFav = async() =>{
       const response = await axiosInstance.get(`favs`)
+      console.log(response.data)
         response.data.forEach(element => {
           axiosInstance.get(`api/getOne/${element}`).then((res) => {
             setProductos(oldArray => [...oldArray, res.data.data])

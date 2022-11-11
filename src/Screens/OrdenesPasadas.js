@@ -250,11 +250,17 @@ const OrdenesPasadas = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.title}>Historial de Ordenes</Text>
       </View>
+      { !ordenes.length ? 
+      <View style={[styles.header, {flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: -30}]}>
+        <Text style={[styles.text, {fontSize: 25, color:"#808080", fontWeight: 'normal'}]}>No ha realizado pedidos</Text>
+      </View>
+      : 
       <Tab.Navigator>
           <Tab.Screen name="Completas" component={Completas} />
           <Tab.Screen name="En camino" component={EnCamino} />
           <Tab.Screen name="Pendientes" component={Pendientes} />
       </Tab.Navigator>
+      }
     </View>
   ) 
 }

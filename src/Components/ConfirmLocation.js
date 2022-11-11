@@ -1,15 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {
-  View,
-  Text,
-  Button,
-  StatusBar,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-  Alert,
+  View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, ToastAndroid, Alert,
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -94,8 +85,8 @@ const ConfirmLocation = ({route}) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-		  disabled={calle == '' || direccion == '' || numero == '' || referencia == '' ? true : false}
-          onPress={() => navigation.navigate('PaymentMethod', {latitude : latitude, longitude: longitude, direccion : direccion , calle : calle, numero: numero, referencia : referencia })}>
+		  // disabled={calle == '' || direccion == '' || numero == '' || referencia == '' ? true : false}
+          onPress={() => calle == '' || direccion == '' || numero == '' || referencia == '' ? ToastAndroid.show('Favor completar los campos faltantes', ToastAndroid.LONG,) : navigation.navigate('PaymentMethod', {latitude : latitude, longitude: longitude, direccion : direccion , calle : calle, numero: numero, referencia : referencia })}>
           <Text style={styles.buttonText}> Aceptar </Text>
         </TouchableOpacity>
       </View>
@@ -157,9 +148,10 @@ const styles = StyleSheet.create({
     height: 40,
     width: '90%',
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 0.4,
     borderRadius: 15,
     padding: 10,
+    minHeight: 50,
     color: 'black',
   },
   button: {

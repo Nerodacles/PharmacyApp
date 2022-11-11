@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, { useState, useRef, useContext } from 'react';
-import { View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Button, StatusBar, ImageBackground, StyleSheet, TouchableOpacity, TextInput, Platform, Alert, ToastAndroid } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -17,6 +17,7 @@ const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
     const [isLoading, setIsLoading] = useState('');
     const [isLogin, setIsLogin] = useState(true);
 
@@ -35,6 +36,10 @@ const LoginScreen = ({navigation}) => {
         setEmail(email);
     }
 
+    const onChangePhone = (phone) => {
+        setPhone(phone);
+    }
+
     const onChangePasswd = (password) => {
         setPassword(password);
     }
@@ -43,6 +48,7 @@ const LoginScreen = ({navigation}) => {
         setIsLogin(!isLogin);
         setUsername('');
         setPassword('');
+        setPhone('');
         setEmail('');
     }
 
@@ -57,15 +63,17 @@ const LoginScreen = ({navigation}) => {
             username,
             email,
             password,
+            phone
         }).then(res => {
             let userInfo = res.data;
 
             setUserInfo(userInfo);
             setUserToken(userInfo.token);
+            onChangeHandler()
         })
         .catch((e) => {
             if (e.toJSON.status = 500){
-                alert('Usuario, correo y/o Contraseña invalido')
+                ToastAndroid.show('Usuario, correo y/o Contraseña invalido', ToastAndroid.LONG,)
             }
         })
     }
@@ -96,20 +104,31 @@ const LoginScreen = ({navigation}) => {
                             style={styles.input} 
                             placeholderTextColor="black" 
                             placeholder="Usuario" 
+                            autoCapitalize='none'
                             onChangeText={onChangeUsername}>
                         </TextInput>
+
+                        {!isLogin && <TextInput 
+                            value={phone} 
+                            style={styles.input} 
+                            placeholderTextColor="black"  
+                            placeholder="Numero Telefonico"
+                            keyboardType='phone-pad' 
+                            autoCapitalize="none" 
+                            onChangeText={onChangePhone}>
+                        </TextInput>}
 
                         <TextInput 
                             value={password} 
                             secureTextEntry={true} 
                             style={styles.input} 
                             placeholderTextColor="black" 
+                            autoCapitalize='none'
                             placeholder="Contraseña" 
                             onChangeText={onChangePasswd}>
                         </TextInput>
                         
                         <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
-                        <Text style={[styles.message, {color: 'black'}]}>micha no silve coñazo - Juanma e lo ma duro</Text>
                         
                         <TouchableOpacity style={styles.button} onPress={isLogin ? () => {login(username, password)} : onSubmit}>
                             <Text style={styles.buttonText}>{isLogin ? 'Iniciar Sesión' : 'Registrarte'}</Text>
@@ -130,14 +149,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#adadas',
         marginTop: '40%',
         borderRadius: 20,
-        maxHeight: 380,
+        maxHeight: 500,
         paddingBottom: '30%',
         marginHorizontal: 20
     },
     heading: {
         fontSize: 30,
         fontWeight: 'bold',
-        marginTop: '5%',
+        // marginTop: '5%',
+        justifyContent: 'center',
+        height: '50%',
         marginBottom: '30%',
         color: 'black',
         textAlign: 'center'
@@ -145,6 +166,7 @@ const styles = StyleSheet.create({
     form: {
         backgroundColor: "#FFFFFF",
         flex: 1,
+        height: '100%',
         justifyContent: 'space-between',
         paddingBottom: '5%',
     },
@@ -153,25 +175,27 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: '10%',
+        paddingTop: 0,
     },  
     input: {
         width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: 'black',
-        paddingTop: 10,
+        borderWidth: 0.1,
+        borderRadius: 15,
+        padding: 10,
+        textAlign: 'left',
+        // borderBottomColor: 'black',
+        margin: 5,
         fontSize: 16, 
-        minHeight: 40,
+        minHeight: 50,
         color: 'black',
     },
     button: {
         width: '80%',
-        backgroundColor: 'black',
+        backgroundColor: '#4cc3eb',
         height: 40,
         borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 5,
     },
     buttonText: {
         color: 'white',

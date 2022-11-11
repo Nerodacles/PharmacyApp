@@ -23,16 +23,17 @@ const TabNavigator = (props) => {
     isDelivery()
 
     return(
-        <Tab.Navigator initialRouteName='Home' screenOptions={{
+        <Tab.Navigator screenOptions={{
             tabBarShowLabel:true,
+            unmountOnBlur: isDelivery() ? true : false,
             headerShown: false,
             tabBarActiveTintColor:'#0062da',
-            style:{
-                backgroundColor: '#eff4f0',
-                justifyContent: "center",
-                paddingVertical: 15,
-                elevation: 2,
-                height: 65
+            tabBarStyle:{
+                backgroundColor: '#fff',
+                // justifyContent: "center",
+                paddingBottom: 5,
+                elevation: 0,
+                borderTopWidth:0,
 
             }
                 }}>
@@ -40,7 +41,7 @@ const TabNavigator = (props) => {
                 tabBarIcon: ({color, size}) => {
                     return <Icon name="home-outline" color={color} size={size} />
                 },
-                tabBarStyle:{ display: hide == 'Info' || hide == 'UserLocation' || hide == 'ConfirmLocation' ? "none" : "flex"}
+                tabBarStyle:{ backgroundColor: '#fff', paddingBottom: 5, elevation: 0, borderTopWidth:0, display: hide == 'Info' || hide == 'UserLocation' || hide == 'ConfirmLocation' || hide == 'PaymentMethod' ? "none" : "flex"}
             }} />
             {isDelivery() ? null : 
             <Tab.Screen name="Busqueda" component={Search} options={{

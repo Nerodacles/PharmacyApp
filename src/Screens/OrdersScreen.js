@@ -106,14 +106,16 @@ const OrdersScreen = ({navigation}) => {
                       <View style={styles.wrapperCustom}>
                         <View style={styles.row}>
                           <View style={styles.rowSpace}>
-                          <Text style={[styles.textName, {fontWeight: 'bold'}]}>No. de Orden: #{order.id}</Text>
+                          <Text style={[styles.text, {fontWeight: 'bold'}]}>No. de Orden: #{order.id}</Text>
                           </View>
                         </View>
                         <View style={styles.column}>
-                          <Text style={styles.textName}>Fármacos: { order.drugs.map((drug, index) => { return <Text style={styles.text} key={index}> {drug.quantity + ' de ' + drug.name}, </Text> })}</Text> 
-                          <Text style={styles.textName}>Usuario: {order.user}</Text>
-                          <Text style={styles.textName}>Estado: {order.delivered === 'on the way' ? 'Activo' : 'Pendiente'}</Text>
-                          <Text style={styles.textPrice}>Fecha: {order.createdTime.split("T")[0]}</Text>
+                          <Text style={styles.text}>Fármacos: { order.drugs.map((drug, index) => { return <Text style={styles.textName} key={index}> {drug.quantity}x {drug.name},</Text> })}</Text> 
+                          <Text style={styles.text}>Usuario: <Text style={styles.textName}> {order.user}</Text></Text>
+                          <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between', marginVertical: 5}}>
+                            <Text style={styles.text}>Fecha: {order.createdTime.split("T")[0]}</Text>
+                            <Text style={[styles.text, {color: order?.delivered === 'on the way' ? '#4BB543' : '#ed4337' }]}>{order?.delivered === 'on the way' ? 'Activo' : 'Pendiente'} </Text>
+                          </View>
                         </View>
                       </View>
                 </Pressable>
@@ -160,14 +162,16 @@ const OrdersScreen = ({navigation}) => {
                       <View style={styles.wrapperCustom}>
                         <View style={styles.row}>
                           <View style={styles.rowSpace}>
-                          <Text style={[styles.textName, {fontWeight: 'bold'}]}>No. de Orden: #{order.id}</Text>
+                          <Text style={[styles.text, {fontWeight: 'bold'}]}>No. de Orden: #{order.id}</Text>
                           </View>
                         </View>
                         <View style={styles.column}>
-                          <Text style={styles.textName}>Fármacos: { order.drugs.map((drug, index) => { return <Text style={styles.text} key={index}> {drug.quantity + ' de ' + drug.name}, </Text> })}</Text> 
-                          <Text style={styles.textName}>Usuario: {order.user}</Text>
-                          <Text style={styles.textName}>Estado: {order.delivered === 'on the way' ? 'Activo' : 'Pendiente'}</Text>
-                          <Text style={styles.textPrice}>Fecha: {order.createdTime.split("T")[0]}</Text>
+                          <Text style={styles.text}>Fármacos: { order.drugs.map((drug, index) => { return <Text style={styles.textName} key={index}> {drug.quantity}x {drug.name},</Text> })}</Text> 
+                          <Text style={styles.text}>Usuario: <Text style={styles.textName}> {order.user}</Text></Text>
+                          <View style={{flexDirection: 'row', flex:1, justifyContent: 'space-between', marginVertical: 5}}>
+                            <Text style={styles.text}>Fecha: {order.createdTime.split("T")[0]}</Text>
+                            <Text style={[styles.text, {color: order?.delivered === 'on the way' ? '#4BB543' : '#ed4337' }]}>{order?.delivered === 'on the way' ? 'Activo' : 'Pendiente'} </Text>
+                          </View>
                         </View>
                       </View>
                 </Pressable>
@@ -220,6 +224,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    fontSize: 15,
+    fontWeight: 'bold',
     color: 'black',
   },
   heading: {
@@ -333,6 +339,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     marginBottom: 5
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    width:"30%",
+    marginLeft: 5
   },
 });
 

@@ -1,8 +1,7 @@
 import React, {createContext, useState, useEffect} from 'react';
-import { Modal } from 'react-native';
+import { Modal, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
 
 const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
@@ -16,7 +15,7 @@ export const AuthProvider = ({children}) => {
 
   const login = (username, password) => {
     if (!username.trim() || !password.trim()){
-      alert("Usuario, correo o contraseña invalido");
+      ToastAndroid.show('Usuario, correo y/o Contraseña invalido', ToastAndroid.LONG,)
       return;
     } else {
       setIsLoading(true)
@@ -48,7 +47,7 @@ export const AuthProvider = ({children}) => {
           }).catch(
             function (error) {
               if (error.toJSON.status = 400){
-                alert('Usuario y/o Contraseña incorrecta')
+                ToastAndroid.show('Usuario y/o Contraseña invalido', ToastAndroid.LONG,)
               }
               setIsLoading(false)
             }

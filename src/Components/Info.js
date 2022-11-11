@@ -1,13 +1,14 @@
 // In App.js in a new project
 
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ActivityIndicator, ToastAndroid, SafeAreaView, ScrollView } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Feather from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -17,7 +18,8 @@ function Info ({ route }) {
   const {userToken}= useContext(AuthContext);
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false)
-  const [detalles, setDetalles] = useState([]);
+  const [detalles, setDetalles] = useState([])
+  const [effects, setEffects] = useState([])
   const [favorite, setFavorite] = useState([])
   const [tags, setTags] = useState([])
   const [data, setData] = useState([]);
@@ -49,6 +51,7 @@ function Info ({ route }) {
       setDetalles(response.data.data)
       setFavorite(response.data.favorite)
       setTags(response.data.data.tags)
+      setEffects(response.data.data.secondaryEffects)
       setIsLoading(false)
     })
   }, [id]);
@@ -102,23 +105,55 @@ function Info ({ route }) {
         <Image source={{uri: `https://${detalles.cover}`}} style={style.img}/>
       </View>
 
+      <Text style={style.title}>{detalles.name}</Text>
       <View style={style.cont1}>
-        <View style={style.cont2}>
-          <Text style={style.title}>{detalles.name}</Text>
-          <Text style={style.subtitle}>Descripción</Text>
-          <Text style={style.description}> {detalles.description} </Text>
-        </View>
-        <View style={style.bottomCont}>
-        <Text style={[style.description, {opacity: 0.4}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
+        <SafeAreaView style={{flex: 2}}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={style.cont2}>
+              <Text style={style.subtitle}>Descripción</Text>
+              <Text style={style.description}> {detalles.description} </Text>
+              <Text style={style.subtitle}>Efectos secundarios</Text>
+              {effects.map((effect, id) => {
+                return ( <Text key={id} style={style.description}> {effect} </Text>)
+              })}
+              <View style={style.bottomCont}>
+                <Text style={[style.description, {opacity: 0.4}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+        <Text style={style.price}>RD${detalles.price}</Text>
         <View style={style.cont3}>
           <TouchableOpacity onPress={AddFav}>
             <FontAwesome name={favorite !== true ? "heart-o" : "heart"} color={favorite !== true ? "#000" : "#E2443B"} size={30} />
           </TouchableOpacity>
-          <Text style={style.price}>RD${detalles.price}</Text>
-          <TouchableOpacity style={style.btn} onPress={() => increaseCartQuantity(id)}>
+          <View style={{flexDirection: 'row', width: '80%', justifyContent: 'flex-end'}}>
+          {quantity=== 0 ?(
+            (
+            <TouchableOpacity style={style.btn} onPress={() => increaseCartQuantity(id)}>
+              <Icon name='cart-plus' color="#FFF" size={25} />
+            </TouchableOpacity>
+            )
+            
+          ): (
+            <View style={style.cartView}>
+              <View style={[style.row, {justifyContent: 'flex-end'}]}>
+                <TouchableOpacity style={style.btnInc} onPress={() => decreaseCartQuantity(id)}>
+                  <Feather name='minus' color="#000" size={30} />
+                </TouchableOpacity>
+                <Text style={[style.textPrice, {fontSize: 25}, quantity===10 && {marginRight: 48}]}>{quantity}</Text>
+                {quantity <10 && 
+                <TouchableOpacity style={style.btnInc} onPress={() => increaseCartQuantity(id)}>
+                  <Feather name='plus' color="#000" size={30} />
+                </TouchableOpacity>}
+              </View>
+
+            </View>
+          )}
+          <TouchableOpacity style={[style.btn, {backgroundColor: '#E2443B'} ]} onPress={() => navigation.navigate('UserLocation')}>
             <Text style={style.btnText}>Comprar</Text>
           </TouchableOpacity>
-        </View>
+          </View>
         </View>
       </View>
 
@@ -137,11 +172,11 @@ const style = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginTop: 5,
-    color:"#FFF",
-    textAlign:"center"
+    color:"#000",
+    textAlign:"left"
  },
  subtitle:{
-  fontSize: 25,
+  fontSize: 20,
   fontWeight: 'bold',
   marginTop: 10,
   color:"#FFF",
@@ -150,13 +185,17 @@ const style = StyleSheet.create({
   paddingTop:10,
   color:"#FFF",
   fontSize: 18,
-  lineHeight:25
+  // lineHeight:25
 },
 btn:{
-  backgroundColor: "#E2443B",
-  paddingHorizontal:40,
+  backgroundColor: "#4cc3eb",
+  justifyContent: 'center',
+  alignItems: 'center',
   paddingVertical:15,
   borderRadius:30,
+  marginRight: 5,
+  alignSelf: 'flex-end',
+  width: 100,
 },
 btnText:{
   fontSize:20,
@@ -176,8 +215,8 @@ img:{
   resizeMode:"cover"
 },
 cover:{
-  height:250,
-  width:300,
+  height:225,
+  width:250,
   margin:10
 },
 cont1:{
@@ -198,9 +237,9 @@ cont3:{
   marginBottom:20,
   alignItems:"center",
   width:"100%",
-  height:"35%",
+  // height:"15%",
   justifyContent:"space-between",
-  marginTop:20,
+  // marginTop:10,
 },
 bottomCont:{
   flexDirection:"column",
@@ -208,11 +247,45 @@ bottomCont:{
   height: '40%'
 },
 price: {
-  fontSize: 20,
+  fontSize: 25,
   color:"#FFF",
-  marginLeft:60,
-  textAlign:"center"
+  marginRight:15,
+  textAlign:"right"
 },
+row: {
+  flexDirection: "row",
+  width:'100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // marginBottom: 5
+},
+btnInc:{
+  backgroundColor: "#4cc3eb",
+  borderRadius:30,
+  paddingVertical:5,
+  width:50,
+  alignItems: 'center'
+},
+textPrice: {
+  color: 'black',
+  fontSize: 22,
+  fontWeight: '400',
+  textAlignVertical: "center",
+  marginHorizontal: 10,
+},
+textName: {
+  color: 'black',
+  fontSize: 20,
+  fontWeight: '400',
+  textAlignVertical: "center",
+  marginLeft: 5,
+},
+cartView:{
+  flex:1,
+  marginHorizontal:10,
+  alignItems: 'center',
+  justifyContent: 'center'
+}
 })
 
 export default Info;
