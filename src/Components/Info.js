@@ -42,7 +42,6 @@ function Info ({ route }) {
  
 
   useEffect(() => {
-    console.clear()
     setIsLoading(true)
     setDetalles([])
     setFavorite([])
