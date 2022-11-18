@@ -111,12 +111,12 @@ function Info ({ route }) {
             <View style={style.cont2}>
               <Text style={style.subtitle}>Descripción</Text>
               <Text style={style.description}> {detalles.description} </Text>
-              <Text style={style.subtitle}>Efectos secundarios</Text>
-              {effects.map((effect, id) => {
-                return ( <Text key={id} style={style.description}> {effect} </Text>)
-              })}
-              <View style={style.bottomCont}>
-                <Text style={[style.description, {opacity: 0.4}]}>Tags: {tags?.toString().split(',').join(', ')} </Text>
+              {effects !== undefined ? <Text style={style.subtitle}>Efectos secundarios</Text>: null }
+              {effects !== undefined ? effects.map((effect, id) => {
+                return ( <Text key={id} style={style.description}> - {effect} </Text>)
+              }) : null }
+              <View>
+                <Text style={[style.description, {opacity: 0.4}]}>Sintomas: {tags?.toString().split(',').join(', ')} </Text>
               </View>
             </View>
           </ScrollView>

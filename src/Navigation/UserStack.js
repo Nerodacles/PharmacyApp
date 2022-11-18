@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {  Farmacos, Favorites, HomeScreen, Order, Search, OrdenesPasadas, OrdersScreen, MapScreen, } from '../Screens';
+import {  Farmacos, Favorites, HomeScreen, Order, Search, OrdenesPasadas, OrdersScreen, MapScreen, AccountScreen} from '../Screens';
 import { Products, Info, PaymentMethod, UserLocation, ConfirmLocation, ChangePassword } from '../Components';
 import ShoppingCart from '../Screens/CartScreen';
 
@@ -27,6 +27,8 @@ const UserStack = () => {
             <Stack.Screen name="UserLocation" component={UserLocation} />
             <Stack.Screen name="ConfirmLocation" component={ConfirmLocation} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            
+            <Stack.Screen name="AccountScreen" component={AccountScreen} />
 
         </Stack.Navigator>
     )

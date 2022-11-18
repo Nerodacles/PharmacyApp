@@ -2,8 +2,9 @@ import React, {useContext, useState} from 'react';
 import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Pressable, Modal} from 'react-native';
 import { Divider } from 'react-native-paper';
 import { AuthContext } from '../context/AuthContext';
+import Feather from 'react-native-vector-icons/Feather';
 
-const ProfileScreen = ({ navigation }) =>{
+const AccountScreen = ({ navigation }) =>{
     const [modalVisible, setModalVisible] = useState(false);
     const { logout, userInfo } = useContext(AuthContext);
 
@@ -23,41 +24,59 @@ const ProfileScreen = ({ navigation }) =>{
 
     return(
         <View style={style.container}>
-            <Text style={style.title}>Perfil</Text>
+            <View style={style.header}>
+                <TouchableOpacity onPress={() => navigation.navigate('Perfil')} style={style.backbtn}>
+                    <Feather name="chevron-left" color="#000" size={25} />
+                </TouchableOpacity>
+                <Text style={style.title}>Ajustes de Cuenta</Text>
+            </View>
             <View style={style.cont}>
                 <View style={style.cont2}>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Nombre de Usuario:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.username: 'RandomUser'}
+                        </Text>
+                    </View>
+                    {/* <Divider style={{backgroundColor: 'white'}} /> */}
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Correo:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.email: 'RandomUser'}
+                        </Text>
+                    </View>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Rol:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.role: 'RandomUser'}
+                        </Text>
+                    </View>
+                    <View style={style.options}>
+                        <Text style={style.subtitle}>
+                            Numero Telefonico:
+                        </Text>
+                        <Text style={style.text}>
+                            {userInfo ? userInfo.phone.substr(0, 3)+ '-' + userInfo.phone.substr(3, 3)+ '-' + userInfo.phone.substr(6, 4) : 'RandomUser'}
+                        </Text>
+                    </View>
                     {isDelivery() ? null :
                         <View style={style.options}>
-                            <Pressable onPress={() => navigation.navigate('Favorito')} style={{width: '100%'}}>
+                            <Pressable onPress={() => navigation.navigate('ChangePassword')} style={{width: '100%', flexDirection:'row', alignItems:'center', height: 50, justifyContent: 'space-between'}}>
                                 <Text style={style.subtitle}>
-                                    Favoritos
+                                    Cambiar Contraseña
                                 </Text>
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <Feather name="chevron-right" color="#FFF" size={25} />
+                                </TouchableOpacity>
                             </Pressable>
                         </View>
                     }
-                    {isDelivery() ? null :
-                        <View style={style.options}>
-                            <Pressable onPress={() => navigation.navigate('Ordenes Pasadas')} style={{width: '100%'}}>
-                                <Text style={style.subtitle}>
-                                    Historial de Ordenes
-                                </Text>
-                            </Pressable>
-                        </View>
-                    }
-                    {isDelivery() ? null :
-                        <View style={style.options}>
-                            <Pressable onPress={() => navigation.navigate('AccountScreen')} style={{width: '100%'}}>
-                                <Text style={style.subtitle}>
-                                    Ajustes de la cuenta
-                                </Text>
-                            </Pressable>
-                        </View>
-                    }
-                </View>
-                <View style={style.cont3}>
-                    <TouchableOpacity style={style.btn} onPress={() => setModalVisible(true) }>
-                        <Text style={style.btnText}>Cerrar Sesión</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
             <View style={style.modalContainer}>
@@ -111,7 +130,6 @@ const style =StyleSheet.create({
     subtitle:{
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 10,
         color: '#FFF'
     },
     btn:{
@@ -210,7 +228,35 @@ const style =StyleSheet.create({
       contenedor: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-      }
+      },
+      header:{
+        flexDirection:"row",
+        alignItems:"center",
+        width:"100%",
+        paddingHorizontal:20,
+        paddingTop:15,
+      },
+      backbtn: {
+        width:'10%',
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: '10%',
+        // marginBottom: '10%',
+        color: 'black',
+        textAlign: 'center',
+        alignItems: 'center',
+      },
+      title: {
+        width:'90%',
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: '10%',
+        marginLeft: '-5%',
+        // marginBottom: '10%',
+        color: 'black',
+        textAlign: 'center',
+        alignItems: 'center'
+      },
 })
 
-export default ProfileScreen
+export default AccountScreen

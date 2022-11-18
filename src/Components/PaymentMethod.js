@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import React, {useState, useRef, useEffect, useContext} from 'react';
-import {View, Text, Modal, Pressable,Image ,StyleSheet, ActivityIndicator, TouchableOpacity, ToastAndroid, TextInput} from 'react-native';
+import {View, Text, Modal, Pressable,Image ,StyleSheet, ActivityIndicator, TouchableOpacity, ToastAndroid, TextInput, ScrollView} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
@@ -118,6 +118,7 @@ const PaymentMethod = ({route}) => {
           ToastAndroid.show('La cantidad ingresada es menor al total de los productos', ToastAndroid.LONG,)
         )
       }else{
+      setModalVisible(true)
       const response = await axiosInstance.post(`orders`, {
         drugs: cartItems,
   
@@ -175,6 +176,7 @@ const PaymentMethod = ({route}) => {
         <Text style={styles.title}>Resumen del Pedido</Text>
       </View>
       <View style={styles.centeredView}>
+        <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
         { cartItems ? (
           <View style={styles.cont3}>
           <View style={{height: "auto", width:"100%"}}>
@@ -199,7 +201,7 @@ const PaymentMethod = ({route}) => {
                 <Text numberOfLines={1} style={[styles.text, {fontSize:16, marginLeft: 5}]}>{numero}</Text>
               </View>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>Metodo de Pago</Text>
+            <Text style={[styles.text, {color: 'black'}]}>Metodo de Pago</Text>
             <DropDownPicker
               schema={{label: 'name', value: 'name'}}
               open={open}
@@ -215,11 +217,11 @@ const PaymentMethod = ({route}) => {
               theme="LIGHT"
               setItems={setPaymentMet}
               dropDownContainerStyle={{width: '90%', alignSelf: 'center'}}
-              style={{ width: '90%', paddingTop: 10, fontSize: 10, minHeight: 50, color: 'black', alignSelf: 'center', borderRadius: 15, borderWidth: 1 }}
+              style={{ width: '90%', paddingTop: 10, fontSize: 10, minHeight: 50, color: 'black', alignSelf: 'center', borderRadius: 15, borderWidth: 1, marginBottom:20 }}
             />
             {value === 'Efectivo' ? (
               <View style={styles.textContainer}>
-                <Text style={styles.text}>Cantidad</Text>
+                <Text style={[styles.text, {color: 'black'}]}>Cantidad con la que pagara</Text>
                 <TextInput onChangeText={onChangeCantidad} value={cantidad.toString()} keyboardType="numeric" style={styles.input} />
               </View>
             ) :  null }
@@ -268,16 +270,15 @@ const PaymentMethod = ({route}) => {
                   <Text
                     style={{
                       flex: 1,
-                      textAlign: 'center',
                       fontSize: 16,
                       fontWeight: 'bold',
                       color: '#fff',
                     }}>
                     PayPal GateWay
                   </Text>
-                  <View style={{padding: 13}}>
+                  {/* <View style={{padding: 13}}>
                     <ActivityIndicator size={24} color={'#fff'} />
-                  </View>
+                  </View> */}
                 </View>
                 <WebView
                   ref={webviewRef}
@@ -294,8 +295,10 @@ const PaymentMethod = ({route}) => {
           ) : null}
           </View>
         ): null }
+        </ScrollView>
       </View>
       <View style={styles.buttonContainer}>
+        {console.log(cantidad)}
       { value === 'Paypal' ? (
           <TouchableOpacity
             style={styles.button}
@@ -305,7 +308,8 @@ const PaymentMethod = ({route}) => {
           :
         (<TouchableOpacity
           style={styles.button}
-          onPress={() => value == [] || metodo == [] ? ToastAndroid.show('Favor completar los campos faltantes', ToastAndroid.LONG,) : (createOrder(), setModalVisible(true) )}>
+          disabled={value ? false : true}
+          onPress={() => !value.length || cantidad === '0' ? ToastAndroid.show('Favor completar los campos faltantes', ToastAndroid.LONG,) : createOrder()}>
           <Text style={styles.buttonText}> Aceptar </Text>
         </TouchableOpacity>)}
       </View>
@@ -342,7 +346,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    width: '90%',
+    width: '95%',
     paddingTop: 10,
     // marginHorizontal: 10,
     fontSize: 20,

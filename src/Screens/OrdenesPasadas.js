@@ -245,7 +245,7 @@ const OrdenesPasadas = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backbtn}>
+        <TouchableOpacity onPress={() => navigation.navigate('Perfil')} style={styles.backbtn}>
           <Feather name="chevron-left" color="#000" size={25} />
         </TouchableOpacity>
         <Text style={styles.title}>Historial de Ordenes</Text>

@@ -148,8 +148,7 @@ export default function UserLocation({navigation}) {
             </Marker>
             {location && <Marker
               pinColor={'navy'}
-              title={`${userInfo.username}`}
-              onPress={() => console.log('hola mundo')}
+              title={"Tu ubicacion"}
               coordinate={{ latitude : location?.coords?.latitude , longitude : location?.coords?.longitude }}
             >
               <View style={styles.markerWrap}>

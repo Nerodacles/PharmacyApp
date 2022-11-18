@@ -19,7 +19,7 @@ const axiosInstance = axios.create({ baseURL: 'https://pharmacy.jmcv.codes/' });
 
 const Search = ({navigation}) => {
   const {userToken}= useContext(AuthContext);
-  const [isChanged, setIsChanged] = useState(true);
+  const [isChanged, setIsChanged] = useState(false);
   const [name, setName] = useState('');
   const [tags, setTags] = useState('');
   const [value, setValue] = useState([])
@@ -96,7 +96,6 @@ const Search = ({navigation}) => {
           const error = new Error('No hay datos en el campo de búsqueda');
           error.statusCode = 500;
           setErrorMessage(error)
-          // return <Text style={{fontSize: 100, color: '#000'}}>HAOFOFKOASKFAO</Text>
 
         }else{
           axiosInstance.post(`search`, {name: name}).then(response =>{
@@ -189,7 +188,8 @@ const Search = ({navigation}) => {
               fontSize: 16, 
               borderRightWidth: 1,
               borderBottomRightRadius:0,
-              borderTopRightRadius:0
+              borderTopRightRadius:0,
+              backgroundColor: 'rgba(225,225,225,0.3)',
             }}
           />) : 
           (<TextInput 
@@ -206,7 +206,7 @@ const Search = ({navigation}) => {
                 <Icon name='search' size={35} color={'#000'} />
             </TouchableOpacity>
             
-            <TouchableOpacity onPress={onChange} style={[styles.btn, {borderBottomLeftRadius:0, borderTopLeftRadius:0,borderRadius:10, borderColor:"#000", borderWidth:1, borderLeftWidth:0 , height:50, width:70, backgroundColor: '#FFF'}]}>
+            <TouchableOpacity onPress={onChange} style={[styles.btn, {borderBottomLeftRadius:0, borderTopLeftRadius:0,borderRadius:10, borderColor:"#000", borderWidth:1, borderLeftWidth:0 , height:50, width:70, backgroundColor:'rgba(225,225,225,0.3)'}]}>
                 <Text style={styles.btnText}>{!isChanged ? 'Por Síntoma' : 'Por Nombre'}</Text>
             </TouchableOpacity>
           </View>  
@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
   // },
   searchbtn:{
     borderWidth:1,
+    backgroundColor: 'rgba(225,225,225,0.3)',
     borderRightWidth:0,
     paddingHorizontal:10,
     alignItems:'center',
@@ -415,6 +416,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     color: 'black',
+    backgroundColor: 'rgba(225,225,225,0.3)',
     width:'65%',
     paddingTop: 10,
     marginHorizontal: 10,

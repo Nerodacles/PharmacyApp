@@ -10,3 +10,5 @@ export { default as Search } from './Search'
 export { default as Order } from './OrdersScreen'
 export { default as CartScreen } from './CartScreen'
 export { default as MapScreen } from './MapScreen'
+export { default as AccountScreen } from './AccountScreen'
+
