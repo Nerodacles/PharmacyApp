@@ -90,7 +90,7 @@ const OrdenesPasadas = ({ navigation }) => {
                       </Text>
                         {details.map((drug, i) => {
                           return(
-                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                            <Text key={i} style={[styles.cardtitle, {fontWeight: 'normal', alignSelf: 'center', marginBottom: 10, fontSize: 16}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )
@@ -153,7 +153,7 @@ const OrdenesPasadas = ({ navigation }) => {
                       {console.log(detailsModal.drugs)}
                         {details.map((drug, i) => {
                           return( 
-                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                            <Text key={i} style={[styles.cardtitle, {fontWeight: 'normal', alignSelf: 'center', marginBottom: 10, fontSize: 16}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )
@@ -215,7 +215,7 @@ const OrdenesPasadas = ({ navigation }) => {
                       </Text>
                         {details.map((drug, i) => {
                           return(
-                            <Text key={i} style={[styles.cardtitle, {alignSelf: 'center', marginBottom: 10}]}>
+                            <Text key={i} style={[styles.cardtitle, {fontWeight: 'normal', alignSelf: 'center', marginBottom: 10, fontSize: 16}]}>
                               {drug.name} x{drug.quantity}
                             </Text>
                           )

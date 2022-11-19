@@ -35,6 +35,31 @@ const ProfileScreen = ({ navigation }) =>{
                             </Pressable>
                         </View>
                     }
+                            {isDelivery() ? 
+                            (
+                            <View><View style={style.options}>
+                                        <Text style={style.subtitle}>
+                                            Nombre de Usuario:
+                                        </Text>
+                                        <Text style={style.text}>
+                                            {userInfo ? userInfo.username : 'RandomUser'}
+                                        </Text>
+                                    </View><View style={style.options}>
+                                            <Text style={style.subtitle}>
+                                                Correo:
+                                            </Text>
+                                            <Text style={style.text}>
+                                                {userInfo ? userInfo.email : 'RandomUser'}
+                                            </Text>
+                                        </View><View style={style.options}>
+                                            <Text style={style.subtitle}>
+                                                Rol:
+                                            </Text>
+                                            <Text style={style.text}>
+                                                {userInfo ? userInfo.role : 'RandomUser'}
+                                            </Text>
+                                        </View>
+                                        </View>) : null}
                     {isDelivery() ? null :
                         <View style={style.options}>
                             <Pressable onPress={() => navigation.navigate('Ordenes Pasadas')} style={{width: '100%'}}>
